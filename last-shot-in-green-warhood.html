@@ -16,16 +16,19 @@ body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-sy
 .project-shell .eyebrow{font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
 .project-footer .footer-inner{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media(max-width:700px){.project-grid{grid-template-columns:1fr}.project-footer .footer-inner{grid-template-columns:1fr}.project-nav{gap:12px}.project-hero{padding-top:40px}}
-.hoof-trail{display:flex;align-items:center;gap:9px;min-width:150px;height:46px;overflow:hidden;position:relative}
-.hoof-print{width:25px;height:29px;display:inline-flex;gap:3px;align-items:center;justify-content:center;flex:none;opacity:0;transform:translateY(8px) rotate(-16deg);animation:hoof-step 3.6s infinite}
-.hoof-print:nth-child(even){transform:translateY(-6px) rotate(16deg)}
-.hoof-print:nth-child(2){animation-delay:.45s}.hoof-print:nth-child(3){animation-delay:.9s}.hoof-print:nth-child(4){animation-delay:1.35s}.hoof-print:nth-child(5){animation-delay:1.8s}
-.hoof-print::before,.hoof-print::after{content:"";display:block;width:10px;height:20px;background:var(--ink);border-radius:65% 65% 48% 48%;transform:rotate(-10deg)}
-.hoof-print::after{transform:rotate(10deg)}
-@keyframes hoof-step{0%,8%{opacity:0;filter:blur(2px)}16%,65%{opacity:1;filter:blur(0)}85%,100%{opacity:0}}
-@media(prefers-reduced-motion:reduce){.hoof-print{animation:none;opacity:1;filter:none}}
+
+/* Decorative boar tracks across the page background, not the site logo. */
+.boar-background{position:fixed;inset:82px 0 0;z-index:0;pointer-events:none;overflow:hidden;opacity:.16}
+.boar-background .track{position:absolute;left:var(--x);top:var(--y);width:38px;height:46px;opacity:0;transform:rotate(var(--r)) scale(.8);animation:track-appear 9s infinite;animation-delay:var(--delay)}
+.boar-background .track:before,.boar-background .track:after{content:"";position:absolute;top:5px;width:15px;height:31px;border-radius:60% 60% 42% 42%;background:var(--ink)}
+.boar-background .track:before{left:3px;transform:rotate(-12deg)}.boar-background .track:after{right:3px;transform:rotate(12deg)}
+@keyframes track-appear{0%,7%{opacity:0;transform:rotate(var(--r)) scale(.75)}12%,70%{opacity:1;transform:rotate(var(--r)) scale(1)}90%,100%{opacity:0}}
+.project-shell,.project-footer{position:relative;z-index:1}
+@media(prefers-reduced-motion:reduce){.boar-background .track{animation:none;opacity:1;transform:rotate(var(--r))}}
+
 </style></head><body>
-<header class="nav"><div class="container nav-inner"><a class="logo" href="index.html"><div class="logo-mark"><img src="logo.png" alt="Vorongo"></div><div class="hoof-trail" role="img" aria-label="Следы копыт кабана"><i class="hoof-print"></i><i class="hoof-print"></i><i class="hoof-print"></i><i class="hoof-print"></i><i class="hoof-print"></i></div></a>
+<div class="boar-background" aria-hidden="true"><i class="track" style="--x:8%;--y:4%;--r:18deg;--delay:0.00s"></i><i class="track" style="--x:25%;--y:8.4%;--r:-18deg;--delay:0.36s"></i><i class="track" style="--x:42%;--y:12.8%;--r:18deg;--delay:0.72s"></i><i class="track" style="--x:59%;--y:17.200000000000003%;--r:-18deg;--delay:1.08s"></i><i class="track" style="--x:76%;--y:21.6%;--r:18deg;--delay:1.44s"></i><i class="track" style="--x:93%;--y:26%;--r:-18deg;--delay:1.80s"></i><i class="track" style="--x:24%;--y:30.400000000000002%;--r:18deg;--delay:2.16s"></i><i class="track" style="--x:41%;--y:34.800000000000004%;--r:-18deg;--delay:2.52s"></i><i class="track" style="--x:58%;--y:39.2%;--r:18deg;--delay:2.88s"></i><i class="track" style="--x:75%;--y:43.6%;--r:-18deg;--delay:3.24s"></i><i class="track" style="--x:92%;--y:48%;--r:18deg;--delay:3.60s"></i><i class="track" style="--x:23%;--y:52.400000000000006%;--r:-18deg;--delay:3.96s"></i><i class="track" style="--x:40%;--y:56.800000000000004%;--r:18deg;--delay:4.32s"></i><i class="track" style="--x:57%;--y:61.2%;--r:-18deg;--delay:4.68s"></i><i class="track" style="--x:74%;--y:65.60000000000001%;--r:18deg;--delay:5.04s"></i><i class="track" style="--x:91%;--y:70%;--r:-18deg;--delay:5.40s"></i><i class="track" style="--x:22%;--y:74.4%;--r:18deg;--delay:5.76s"></i><i class="track" style="--x:39%;--y:78.80000000000001%;--r:-18deg;--delay:6.12s"></i><i class="track" style="--x:56%;--y:83.2%;--r:18deg;--delay:6.48s"></i><i class="track" style="--x:73%;--y:87.60000000000001%;--r:-18deg;--delay:6.84s"></i><i class="track" style="--x:90%;--y:92%;--r:18deg;--delay:7.20s"></i><i class="track" style="--x:21%;--y:96.4%;--r:-18deg;--delay:7.56s"></i></div>
+<header class="nav"><div class="container nav-inner"><a class="logo" href="index.html"><div class="logo-mark"><img src="logo.png" alt="Vorongo"></div><div><b>VORONGO</b><span>GAME DEVELOPER</span></div></a>
 <nav class="project-nav" aria-label="Разделы игры"><a href="#overview">Об игре</a><a href="#mechanics">Механики</a><a href="#development">Разработка</a></nav></div></header>
 <main class="project-shell"><section class="project-hero" id="overview"><span class="project-pill">В разработке</span><h1>Last Shot is in<br>Green World</h1><p class="project-lead">Игра про охоту, в которой важны меткость, подготовка и выбор добычи. Выполняй заказы, собирай трофеи и улучшай своё снаряжение.</p><p class="project-note">Начало разработки: 18 ноября 2026 года. Дата релиза пока не объявлена.</p></section>
 <section class="project-section" id="mechanics"><div class="eyebrow">Механики / Gameplay</div><div class="project-grid">
