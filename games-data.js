@@ -56,7 +56,7 @@ window.JAMS = [
 
 window.GAMES = [
   {
-    title: "Last Shot in Green Warhood",
+    title: "Last Shot is in Green World",
     type: { ru: "Охота · В разработке", en: "Hunting · In development" },
     desc: {
       ru: "Охота на кабанов, заказы на точные попадания, трофеи и улучшение снаряжения. Игра в разработке.",
