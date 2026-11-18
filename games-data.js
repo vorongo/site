@@ -56,6 +56,19 @@ window.JAMS = [
 
 window.GAMES = [
   {
+    title: "Last Shot in Green Warhood",
+    type: { ru: "Охота · В разработке", en: "Hunting · In development" },
+    desc: {
+      ru: "Охота на кабанов, заказы на точные попадания, трофеи и улучшение снаряжения. Игра в разработке.",
+      en: "Hunt wild boars, complete precision-shot contracts, collect trophies and upgrade gear. In development."
+    },
+    href: "last-shot-in-green-warhood.html",
+    cover: "",
+    fake: "🎯",
+    store: "Подробнее",
+    status: "dev"
+  },
+  {
     title: "DROP - The Cave Dwarf",
     type: { ru: "Аркада · Android", en: "Arcade · Android" },
     desc: {
