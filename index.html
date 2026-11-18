@@ -49,7 +49,7 @@
 .project-timeline{min-width:1810px}
 .timeline-canvas{width:1740px}
 .timeline-event{width:126px}
-</style><style>.timeline-layout{scrollbar-width:none;-ms-overflow-style:none}.timeline-layout::-webkit-scrollbar{display:none}.timeline-main-dot,.timeline-end-dot{z-index:4}</style><style>.timeline-canvas{height:525px}.timeline-main-dot,.timeline-end-dot{z-index:6}.timeline-duration{z-index:3}.timeline-event{z-index:7}.timeline-stem{pointer-events:none;opacity:.45}</style></head>
+</style><style>.timeline-layout{scrollbar-width:none;-ms-overflow-style:none}.timeline-layout::-webkit-scrollbar{display:none}.timeline-main-dot,.timeline-end-dot{z-index:4}</style><style>.timeline-canvas{height:525px}.timeline-main-dot,.timeline-end-dot{z-index:6}.timeline-duration{z-index:3}.timeline-event{z-index:7}.timeline-stem{pointer-events:none;opacity:.45}</style><style>.timeline-layout{cursor:grab;user-select:none}.timeline-layout.is-dragging{cursor:grabbing}.timeline-layout a{user-select:none}.timeline-layout.is-dragging a{pointer-events:none}</style></head>
 <body data-title-key="doc.title">
 
 <header class="nav">
@@ -288,6 +288,35 @@
  function sync(){const maxScroll=viewport.scrollWidth-viewport.clientWidth;slider.disabled=maxScroll<=0;slider.value=maxScroll>0?Math.round(viewport.scrollLeft/maxScroll*100):0}
  slider.addEventListener('input',()=>{const maxScroll=Math.max(0,viewport.scrollWidth-viewport.clientWidth);viewport.scrollTo({left:maxScroll*Number(slider.value)/100,behavior:'instant'})});
  viewport.addEventListener('scroll',sync,{passive:true});
+ // Drag the timeline itself, without swallowing clicks on project links.
+ let down=false,drag=false,startX=0,lastX=0,lastT=0,v=0,coastFrame=0,suppress=false;
+ const stopCoast=()=>{if(coastFrame)cancelAnimationFrame(coastFrame);coastFrame=0};
+ viewport.addEventListener('pointerdown',e=>{
+  if(e.pointerType!=='mouse'||e.button!==0)return;
+  stopCoast();down=true;drag=false;suppress=false;startX=lastX=e.clientX;lastT=performance.now();v=0;
+ });
+ viewport.addEventListener('pointermove',e=>{
+  if(!down)return;
+  if(!drag){if(Math.abs(e.clientX-startX)<7)return;drag=true;viewport.classList.add('is-dragging');viewport.setPointerCapture(e.pointerId)}
+  const now=performance.now(),dx=e.clientX-lastX,dt=Math.max(1,now-lastT);
+  viewport.scrollLeft-=dx;v=v*.55+(-dx/dt)*.45;lastX=e.clientX;lastT=now;
+ });
+ function finish(e){
+  if(!down)return;down=false;viewport.classList.remove('is-dragging');
+  if(!drag)return;drag=false;suppress=true;
+  if(e.type==='pointercancel')return;
+  let speed=performance.now()-lastT>110?0:Math.max(-2.5,Math.min(2.5,v));
+  if(Math.abs(speed)<.06)return;
+  let prev=performance.now();
+  function coast(now){const dt=Math.min(35,now-prev);prev=now;viewport.scrollLeft+=speed*dt;speed*=Math.pow(.94,dt/16.67);if(Math.abs(speed)>.025)coastFrame=requestAnimationFrame(coast);else stopCoast()}
+  coastFrame=requestAnimationFrame(coast);
+ }
+ viewport.addEventListener('pointerup',finish);
+ viewport.addEventListener('pointercancel',finish);
+ viewport.addEventListener('lostpointercapture',e=>{if(down)finish(e)});
+ viewport.addEventListener('click',e=>{if(suppress){e.preventDefault();e.stopPropagation();suppress=false}},true);
+ viewport.addEventListener('dragstart',e=>e.preventDefault());
+
  document.getElementById('timeline-prev').addEventListener('click',()=>viewport.scrollBy({left:-300,behavior:'smooth'}));
  document.getElementById('timeline-next').addEventListener('click',()=>viewport.scrollBy({left:300,behavior:'smooth'}));
  window.addEventListener('resize',sync);sync();
