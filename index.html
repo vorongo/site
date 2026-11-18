@@ -49,7 +49,7 @@
 .project-timeline{min-width:1810px}
 .timeline-canvas{width:1740px}
 .timeline-event{width:126px}
-</style><style>.timeline-layout{scrollbar-width:none;-ms-overflow-style:none}.timeline-layout::-webkit-scrollbar{display:none}.timeline-main-dot,.timeline-end-dot{z-index:4}</style></head>
+</style><style>.timeline-layout{scrollbar-width:none;-ms-overflow-style:none}.timeline-layout::-webkit-scrollbar{display:none}.timeline-main-dot,.timeline-end-dot{z-index:4}</style><style>.timeline-canvas{height:525px}.timeline-main-dot,.timeline-end-dot{z-index:6}.timeline-duration{z-index:3}.timeline-event{z-index:7}.timeline-stem{pointer-events:none;opacity:.45}</style></head>
 <body data-title-key="doc.title">
 
 <header class="nav">
@@ -262,16 +262,17 @@
   for(let y=2024;y<=2027;y++)html+='<span class="timeline-main-year" style="left:'+x(y+'-01-01')+'px">'+y+'</span>';
   // One shared timeline: each project is a marker above or below the same horizontal axis.
   known.forEach((g,i)=>{
-   const d=dates[g.title],sx=x(d.start),ex=d.end?x(d.end):sx,top=i%2===0;
-   const side=top?'above':'below',offset=top?(i%4===0?70:135):(i%4===1?75:140);
-   const y=top?180-offset:180+offset;
-   const pointY=top?180-(38+(i%3)*28):180+(38+(i%3)*28);
+   const d=dates[g.title],sx=x(d.start),ex=d.end?x(d.end):sx;
+   // Separate dedicated horizontal lanes prevent unrelated project segments crossing.
+   const lanes=[68,118,248,302,354,410,462];
+   const pointY=lanes[i%lanes.length],above=pointY<180;
+   const labelY=above?pointY-58:pointY+19;
    const dateLabel=d.yearOnly?d.start.slice(0,4):d.start;
    const tooltip=(en?'First recorded: ':'Первая известная дата: ')+dateLabel+(d.end?' · '+(en?'Last update: ':'Последнее обновление: ')+d.end:'');
-   html+='<a class="timeline-event '+side+'" href="'+esc(g.href)+'" target="_blank" rel="noopener" title="'+esc(tooltip)+'" style="left:'+sx+'px;top:'+y+'px">'+(g.cover?'<img src="'+esc(g.cover)+'" alt="">':'')+'<span>'+esc(g.title)+'</span></a>';
-   html+='<span class="timeline-stem" style="left:'+sx+'px;top:'+(top?y+46:180)+'px;height:'+(top?180-y-46:y-180)+'px"></span>';
-   html+='<span class="timeline-main-dot" style="left:'+sx+'px" title="'+esc(tooltip)+'"></span>';
-   if(d.end){html+='<span class="timeline-duration" style="left:'+sx+'px;top:'+(pointY-3)+'px;width:'+(ex-sx)+'px"></span><span class="timeline-end-dot" style="left:'+ex+'px;top:'+(pointY-8)+'px" title="'+esc(d.end)+'"></span>';}
+   html+='<a class="timeline-event" href="'+esc(g.href)+'" target="_blank" rel="noopener" title="'+esc(tooltip)+'" style="left:'+sx+'px;top:'+labelY+'px">'+(g.cover?'<img src="'+esc(g.cover)+'" alt="">':'')+'<span>'+esc(g.title)+'</span></a>';
+   html+='<span class="timeline-stem" style="left:'+sx+'px;top:'+(above?labelY+45:pointY)+'px;height:'+(above?Math.max(0,pointY-labelY-45):19)+'px"></span>';
+   html+='<span class="timeline-main-dot" style="left:'+sx+'px;top:'+(pointY-8)+'px" title="'+esc(tooltip)+'"></span>';
+   if(d.end){html+='<span class="timeline-duration" style="left:'+sx+'px;top:'+(pointY-4)+'px;width:'+(ex-sx)+'px"></span><span class="timeline-end-dot" style="left:'+ex+'px;top:'+(pointY-8)+'px" title="'+esc(d.end)+'"></span>';}
   });
   html+='</div><div class="timeline-undated">'+(en?'Dates to confirm: ':'Даты уточняются: ')+unknown.map(g=>'<a href="'+esc(g.href)+'" target="_blank" rel="noopener">'+esc(g.title)+'</a>').join('')+'</div>';
   root.innerHTML=html;
