@@ -234,7 +234,7 @@
   const escapeHtml=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const known=new Map();
   // The jam records contain verified years; other project dates are not specified.
-  JAMS.forEach(j=>{if(j.game&&/^\\d{4}$/.test(j.year))known.set(j.game.toLowerCase(),j.year)});
+  JAMS.forEach(j=>{if(j.game&&String(j.year).length===4&&!Number.isNaN(Number(j.year)))known.set(j.game.toLowerCase(),j.year)});
   const items=[...GAMES.map(g=>({...g,kind:'game'})),...APPS.map(a=>({...a,kind:'app'}))];
   const dated=items.filter(g=>known.has(g.title.toLowerCase())).sort((a,b)=>Number(known.get(b.title.toLowerCase()))-Number(known.get(a.title.toLowerCase())));
   const undated=items.filter(g=>!known.has(g.title.toLowerCase()));
