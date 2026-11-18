@@ -33,6 +33,9 @@
 <link rel="canonical" href="https://vorongo.dev/">
 <link rel="icon" href="logo.png" type="image/png">
 <link rel="stylesheet" href="site.css">
+<style>
+#timeline{padding-top:54px;padding-bottom:64px}.timeline-heading{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:28px}.timeline-heading h2{font-size:clamp(25px,3vw,36px);letter-spacing:-.045em;margin:6px 0 8px}.timeline-heading p{color:var(--muted);font-size:13px;margin:0;line-height:1.6}.timeline-heading .eyebrow{font-size:10px;letter-spacing:.19em;color:var(--muted);font-weight:800}.timeline-en{font-size:.55em;color:var(--muted);font-weight:500}.timeline-count{font-size:12px;color:var(--muted);white-space:nowrap}.project-timeline{position:relative;padding-left:38px}.project-timeline:before{content:"";position:absolute;top:13px;bottom:20px;left:14px;width:2px;background:linear-gradient(var(--accent),var(--line))}.timeline-era{position:relative;margin:0 0 16px;padding:8px 0 3px;font-weight:850;font-size:18px;letter-spacing:-.03em}.timeline-era:before{content:"";position:absolute;left:-30px;top:14px;width:14px;height:14px;border-radius:50%;background:var(--accent);border:3px solid var(--paper);box-shadow:0 0 0 2px var(--line)}.timeline-entry{position:relative;display:grid;grid-template-columns:104px minmax(0,1fr);gap:16px;align-items:center;padding:12px;margin-bottom:12px;border:1px solid var(--line);border-radius:17px;background:var(--paper);text-decoration:none;color:inherit;transition:transform .18s,border-color .18s,box-shadow .18s}.timeline-entry:hover{transform:translateX(5px);border-color:var(--accent);box-shadow:var(--shadow)}.timeline-entry:before{content:"";position:absolute;left:-25px;top:50%;width:12px;height:2px;background:var(--line)}.timeline-entry img{width:104px;height:78px;object-fit:cover;border-radius:10px;background:var(--soft)}.timeline-entry-body{min-width:0}.timeline-entry-type{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}.timeline-entry-title{font-size:16px;font-weight:800;margin:0 0 5px}.timeline-entry-desc{font-size:12px;color:var(--text-soft);line-height:1.5;margin:0}.timeline-entry-status{display:inline-block;margin-top:8px;font-size:10px;color:var(--muted)}.timeline-note{font-size:12px;color:var(--muted);line-height:1.6;margin:6px 0 17px}@media(max-width:650px){#timeline{padding-top:35px}.timeline-heading{align-items:start;flex-direction:column}.project-timeline{padding-left:28px}.project-timeline:before{left:9px}.timeline-era:before{left:-25px}.timeline-entry{grid-template-columns:76px minmax(0,1fr);gap:11px;padding:9px}.timeline-entry img{width:76px;height:72px}.timeline-entry:before{left:-17px}.timeline-entry-title{font-size:14px}.timeline-entry-desc{font-size:11px}}
+</style>
 </head>
 <body data-title-key="doc.title">
 
@@ -180,6 +183,10 @@
       </div>
     </div>
   </section>
+  <section id="timeline" class="section container" aria-labelledby="timeline-heading">
+    <div class="timeline-heading"><div><div class="eyebrow">VORONGO / ARCHIVE</div><h2 id="timeline-heading">История проектов <span class="timeline-en">/ Project timeline</span></h2><p>От первых джемов до текущих разработок. Даты указаны только там, где они известны.</p></div><span class="timeline-count" id="timeline-count"></span></div>
+    <div class="timeline-layout"><div id="project-timeline" class="project-timeline"></div></div>
+  </section>
 </main>
 
 <footer id="contact" class="footer container">
@@ -220,6 +227,39 @@
 <script src="i18n.js"></script>
 <script src="games-data.js"></script>
 <script src="youtube-api.js"></script>
+<script>
+(function(){
+  const root=document.getElementById('project-timeline');
+  if(!root||!window.GAMES||!window.APPS||!window.JAMS)return;
+  const escapeHtml=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const known=new Map();
+  // The jam records contain verified years; other project dates are not specified.
+  JAMS.forEach(j=>{if(j.game&&/^\\d{4}$/.test(j.year))known.set(j.game.toLowerCase(),j.year)});
+  const items=[...GAMES.map(g=>({...g,kind:'game'})),...APPS.map(a=>({...a,kind:'app'}))];
+  const dated=items.filter(g=>known.has(g.title.toLowerCase())).sort((a,b)=>Number(known.get(b.title.toLowerCase()))-Number(known.get(a.title.toLowerCase())));
+  const undated=items.filter(g=>!known.has(g.title.toLowerCase()));
+  function card(g){
+    const lang=typeof getLang==='function'?getLang():'ru';
+    const desc=typeof g.desc==='object'?(g.desc[lang]||g.desc.ru):g.desc;
+    const type=g.kind==='app'?(lang==='en'?'App':'Приложение'):(lang==='en'?'Game':'Игра');
+    const status=typeof t==='function'?t('status.'+g.status):g.status;
+    return '<a class="timeline-entry" href="'+escapeHtml(g.href)+'" target="_blank" rel="noopener">'+(g.cover?'<img src="'+escapeHtml(g.cover)+'" loading="lazy" alt="">':'<div></div>')+'<div class="timeline-entry-body"><div class="timeline-entry-type">'+type+'</div><h3 class="timeline-entry-title">'+escapeHtml(g.title)+'</h3><p class="timeline-entry-desc">'+escapeHtml(desc)+'</p><span class="timeline-entry-status">'+escapeHtml(status)+'</span></div></a>';
+  }
+  function render(){
+    const lang=typeof getLang==='function'?getLang():'ru';
+    let html='',year='';
+    for(const g of dated){const y=known.get(g.title.toLowerCase());if(y!==year){html+='<div class="timeline-era">'+y+'</div>';year=y}html+=card(g)}
+    html+='<div class="timeline-era">'+(lang==='en'?'Date to be confirmed':'Дата уточняется')+'</div><p class="timeline-note">'+(lang==='en'?'These projects have no confirmed start or release year yet.':'Для этих проектов пока нет подтверждённого года начала или выпуска.')+'</p>';
+    html+=undated.map(card).join('');
+    root.innerHTML=html;
+    document.getElementById('timeline-count').textContent=items.length+' '+(lang==='en'?'projects':'проектов');
+    document.querySelector('#timeline .timeline-heading p').textContent=lang==='en'?'From game jams to current projects. Only confirmed dates are shown.':'От первых джемов до текущих разработок. Даты указаны только там, где они известны.';
+    document.querySelector('#timeline-heading').innerHTML=lang==='en'?'Project timeline <span class="timeline-en">/ История проектов</span>':'История проектов <span class="timeline-en">/ Project timeline</span>';
+  }
+  render();document.addEventListener('langchange',render);
+})();
+</script>
+
 <script>
 const marqueeControllers=[];
 
