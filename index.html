@@ -296,61 +296,39 @@
 const marqueeControllers=[];
 
 function enableDragScroll(marquee){
-  let dragging=false,moved=false,lastX=0,lastTime=0,velocity=0,inertiaFrame=0;
-  const cancelInertia=()=>{if(inertiaFrame)cancelAnimationFrame(inertiaFrame);inertiaFrame=0;marquee.dataset.inertia='0'};
-  const loopWidth=()=>marquee.classList.contains('is-scrolling')?marquee.scrollWidth/2:0;
-  function scrollByPixels(delta){
-    const half=loopWidth();
-    if(half>0){
-      let next=marquee.scrollLeft+delta;
-      next=((next%half)+half)%half;
-      marquee.scrollLeft=next;
-    }else marquee.scrollLeft+=delta;
+ let pressed=false,dragging=false,startX=0,lastX=0,lastTime=0,velocity=0,frame=0,blockClick=false;
+ const stop=()=>{if(frame)cancelAnimationFrame(frame);frame=0;marquee.dataset.inertia='0'};
+ const move=delta=>{const half=marquee.classList.contains('is-scrolling')?marquee.scrollWidth/2:0;if(half>0)marquee.scrollLeft=((marquee.scrollLeft+delta)%half+half)%half;else marquee.scrollLeft+=delta};
+ marquee.addEventListener('pointerdown',e=>{
+  if(e.pointerType!=='mouse'||e.button!==0)return;
+  stop();pressed=true;dragging=false;blockClick=false;startX=lastX=e.clientX;lastTime=performance.now();velocity=0;
+ });
+ marquee.addEventListener('pointermove',e=>{
+  if(!pressed)return;
+  if(!dragging){
+   if(Math.abs(e.clientX-startX)<7)return;
+   dragging=true;marquee.classList.add('is-dragging');marquee.setPointerCapture(e.pointerId);
   }
-  marquee.addEventListener('pointerdown',e=>{
-    if(e.pointerType!=='mouse'||e.button!==0)return;
-    cancelInertia();
-    dragging=true;moved=false;lastX=e.clientX;lastTime=performance.now();velocity=0;
-    marquee.classList.add('is-dragging');
-    marquee.setPointerCapture(e.pointerId);
-  });
-  marquee.addEventListener('pointermove',e=>{
-    if(!dragging)return;
-    const now=performance.now(),dx=e.clientX-lastX,dt=Math.max(1,now-lastTime);
-    if(Math.abs(dx)>0){if(Math.abs(dx)>3||moved)moved=true;scrollByPixels(-dx);
-      const instant=-dx/dt;velocity=velocity*.55+instant*.45;}
-    lastX=e.clientX;lastTime=now;
-  });
-  function endDrag(e){
-    if(!dragging)return;
-    dragging=false;marquee.classList.remove('is-dragging');
-    if(moved){
-      marquee.dataset.blockClick='1';
-      setTimeout(()=>{delete marquee.dataset.blockClick},100);
-      if(e&&e.type!=='pointercancel'){
-        let v=performance.now()-lastTime>110?0:Math.max(-2.4,Math.min(2.4,velocity));
-        if(Math.abs(v)>.06){
-          marquee.dataset.inertia='1';
-          let prev=performance.now();
-          function coast(now){
-            const dt=Math.min(35,now-prev);prev=now;
-            scrollByPixels(v*dt);
-            v*=Math.pow(.94,dt/16.67);
-            if(Math.abs(v)>.025){inertiaFrame=requestAnimationFrame(coast)}
-            else cancelInertia();
-          }
-          inertiaFrame=requestAnimationFrame(coast);
-        }
-      }
-    }
-  }
-  marquee.addEventListener('pointerup',endDrag);
-  marquee.addEventListener('pointercancel',endDrag);
-  marquee.addEventListener('lostpointercapture',endDrag);
-  marquee.addEventListener('click',e=>{
-    if(marquee.dataset.blockClick){e.preventDefault();e.stopPropagation()}
-  },true);
-  marquee.addEventListener('dragstart',e=>e.preventDefault());
+  const now=performance.now(),dx=e.clientX-lastX,dt=Math.max(1,now-lastTime);
+  move(-dx);velocity=velocity*.55+(-dx/dt)*.45;lastX=e.clientX;lastTime=now;
+ });
+ function release(e){
+  if(!pressed)return;
+  pressed=false;marquee.classList.remove('is-dragging');
+  if(!dragging)return;
+  dragging=false;blockClick=true;
+  if(e.type==='pointercancel')return;
+  let v=performance.now()-lastTime>110?0:Math.max(-2.4,Math.min(2.4,velocity));
+  if(Math.abs(v)<.06)return;
+  marquee.dataset.inertia='1';let prev=performance.now();
+  function coast(now){const dt=Math.min(35,now-prev);prev=now;move(v*dt);v*=Math.pow(.94,dt/16.67);if(Math.abs(v)>.025)frame=requestAnimationFrame(coast);else stop()}
+  frame=requestAnimationFrame(coast);
+ }
+ marquee.addEventListener('pointerup',release);
+ marquee.addEventListener('pointercancel',release);
+ marquee.addEventListener('lostpointercapture',e=>{if(pressed)release(e)});
+ marquee.addEventListener('click',e=>{if(blockClick){e.preventDefault();e.stopPropagation();blockClick=false}},true);
+ marquee.addEventListener('dragstart',e=>e.preventDefault());
 }
 
 function startAutoScroll(marquee,loop){
