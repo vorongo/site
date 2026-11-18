@@ -256,7 +256,7 @@
  };
  const min=Date.UTC(2024,0,1),max=Date.UTC(2027,0,1),W=1740;
  const x=d=>Math.max(0,Math.min(W,(Date.parse(d+'T00:00:00Z')-min)/(max-min)*W));
- const known=GAMES.filter(g=>dates[g.title]).sort((a,b)=>x(dates[a.title].start)-x(dates[b.title].start));
+ const known=[...GAMES,...(window.APPS||[])].filter(g=>dates[g.title]).sort((a,b)=>x(dates[a.title].start)-x(dates[b.title].start));
  const unknown=[...GAMES,...(window.APPS||[])].filter(g=>!dates[g.title]);
  function render(){
   const en=typeof getLang==='function'&&getLang()==='en';
