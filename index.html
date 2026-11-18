@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vorongo - Game Developer</title>
+<meta name="description" content="Vorongo - инди-разработчик игр и приложений. Игры, джемы, Android-приложения и процесс разработки.">
+<meta name="theme-color" content="#e8eef5">
+<script>
+(function(){
+  try{
+    var dark=localStorage.getItem('vorongo-theme')==='dark';
+    document.documentElement.classList.toggle('dark',dark);
+    document.documentElement.style.backgroundColor=dark?'#11161d':'#e8eef5';
+    var m=document.querySelector('meta[name="theme-color"]');
+    if(m)m.content=dark?'#11161d':'#e8eef5';
+  }catch(e){}
+})();
+</script>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vorongo">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:title" content="Vorongo - Game Developer">
+<meta property="og:description" content="Инди-разраб: игры, приложения и джемы. Хобби и цель в жизни.">
+<meta property="og:url" content="https://vorongo.dev/">
+<meta property="og:image" content="https://vorongo.dev/hero-workspace.png">
+<meta property="og:image:alt" content="Рабочее место Vorongo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Vorongo - Game Developer">
+<meta name="twitter:description" content="Инди-разраб: игры, приложения и джемы. Хобби и цель в жизни.">
+<meta name="twitter:image" content="https://vorongo.dev/hero-workspace.png">
+<link rel="canonical" href="https://vorongo.dev/">
+<link rel="icon" href="logo.png" type="image/png">
+<link rel="stylesheet" href="site.css">
+</head>
+<body data-title-key="doc.title">
+
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="logo" href="#home">
+      <div class="logo-mark"><img src="logo.png" alt="Vorongo"></div>
+      <div><b>VORONGO</b><span>GAME DEVELOPER</span></div>
+    </a>
+    <nav class="navlinks" id="nav-drawer">
+      <a class="active" href="#home" data-i18n="nav.home">Главная</a>
+      <a href="#games" data-i18n="nav.games">Игры</a>
+      <a href="#apps" data-i18n="nav.apps">Приложения</a>
+      <a href="#jams" data-i18n="nav.jams">Джемы</a>
+      <a href="#youtube" data-i18n="nav.youtube">YouTube</a>
+      <a href="#about" data-i18n="nav.about">Обо мне</a>
+      <a href="#contact" data-i18n="nav.contact">Контакты</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn lang-btn" id="lang-btn" type="button" data-i18n-aria="lang.aria" aria-label="Switch language">🇬🇧</button>
+      <button class="icon-btn" id="theme-btn" type="button" data-i18n-aria="theme.aria" aria-label="Сменить тему">☼</button>
+      <button class="icon-btn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="nav-drawer" data-i18n-aria="nav.menu.aria" aria-label="Открыть меню">☰</button>
+    </div>
+  </div>
+</header>
+
+<main id="home" class="container">
+  <section class="hero">
+    <div class="hero-card">
+      <div class="hero-copy">
+        <div class="pills">
+          <div class="pill"><span class="dot"></span> <span data-i18n="hero.pill1">Делаю игры</span></div>
+          <div class="pill"><span class="dot"></span> <span data-i18n="hero.pill2">Снимаю видео</span></div>
+          <div class="pill"><span class="dot"></span> <span data-i18n="hero.pill3">Страдаю фигней</span></div>
+        </div>
+        <h1><span data-i18n="hero.hi">Привет! Я Vorongo</span><br><span class="hero-title-slot"><span class="hero-title-sub" id="hero-rotator" aria-live="polite">Разработка игр и другой хрени -<br>моё хобби и цель в жизни.</span></span></h1>
+        <p data-i18n="hero.p">Инди-разраб - и этим всё сказано.</p>
+        <div class="actions">
+          <a class="btn primary" href="#games" data-i18n="hero.games">🎮 &nbsp;Смотреть игры</a>
+        </div>
+        <div class="stack-label" data-i18n="hero.stack">Использую:</div>
+        <div class="stack">
+          <span class="tag">Godot</span><span class="tag">GDScript</span><span class="tag">Aseprite</span><span class="tag">Git</span><span class="tag">Photoshop</span><span class="tag">Pixel Art</span>
+        </div>
+      </div>
+      <div class="hero-art" id="hero-art">
+        <div class="hero-slide hero-slide-workspace is-active" role="img" aria-label="Vorongo workspace"></div>
+        <div class="hero-slide hero-slide-cat" role="img" aria-label="Vorongo cat"></div>
+        <div class="art-caption" id="hero-art-caption">Рабочее место разработчика · 2026</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="games" class="section">
+    <div class="panel">
+      <div class="section-head">
+        <div class="section-title"><span class="ico">🎮</span> <span data-i18n="games.title">Мои игры</span></div>
+        <a class="more" href="games.html" id="games-more" data-i18n="games.more">Смотреть все →</a>
+      </div>
+      <div class="games-marquee" id="games-marquee">
+        <div class="games-marquee-track" id="games-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="apps" class="section">
+    <div class="panel">
+      <div class="section-head">
+        <div class="section-title"><span class="ico">📱</span> <span data-i18n="apps.title">Приложения</span></div>
+        <a class="more" href="apps.html" id="apps-more" data-i18n="apps.more">Смотреть все →</a>
+      </div>
+      <div class="games-marquee" id="apps-marquee">
+        <div class="games-marquee-track" id="apps-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="jams" class="section">
+    <div class="panel">
+      <div class="section-head">
+        <div class="section-title"><span class="ico">🏆</span> <span data-i18n="jams.title">Джемы</span></div>
+        <a class="more" href="jams.html" id="jams-more" data-i18n="jams.more">Смотреть все →</a>
+      </div>
+      <div class="jams" id="jams-list"></div>
+    </div>
+  </section>
+
+  <section id="youtube" class="section">
+    <div class="panel">
+      <div class="section-head">
+        <div class="section-title"><span class="ico">▶</span> <span data-i18n="yt.title">YouTube</span></div>
+        <a class="more" href="https://www.youtube.com/@vorongo" target="_blank" rel="noopener" data-i18n="yt.more">На канал →</a>
+      </div>
+      <div class="yt-grid">
+        <div class="yt-info">
+          <div class="yt-channel">
+            <div class="yt-avatar"><img src="logo.png" alt="Vorongo"></div>
+            <div>
+              <b>Vorongo</b>
+              <span data-i18n="yt.handle">@vorongo</span>
+            </div>
+          </div>
+          <p class="yt-desc" data-i18n="yt.desc">Геймдев, трейлеры и процесс разработки игр.</p>
+          <div class="yt-stats">
+            <div class="yt-stat">
+              <strong id="yt-subs">2.3K</strong>
+              <span data-i18n="yt.subs">Подписчиков</span>
+            </div>
+            <div class="yt-stat">
+              <strong id="yt-videos">123</strong>
+              <span data-i18n="yt.videos">Видео</span>
+            </div>
+          </div>
+          <div class="yt-actions">
+            <div class="g-ytsubscribe" data-channelid="UCgKDfPRw_y6-h7n-n7cfYMg" data-layout="default" data-count="default"></div>
+            <a class="btn primary yt-open" href="https://www.youtube.com/@vorongo" target="_blank" rel="noopener" data-i18n="yt.open">Открыть канал</a>
+          </div>
+        </div>
+        <div class="yt-trailer">
+          <div class="yt-frame">
+            <iframe
+              src="https://www.youtube.com/embed/D2yQqY6ITOE"
+              title="Vorongo trailer"
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              referrerpolicy="strict-origin-when-cross-origin"></iframe>
+          </div>
+          <div class="yt-trailer-label" data-i18n="yt.trailer">Трейлер / геймплей</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section">
+    <div class="panel about">
+      <div class="about-copy">
+        <h2 data-i18n="about.title">☁️ &nbsp;Обо мне</h2>
+        <p data-i18n="about.p">Инди-разраб и мелкий ютубер. Не люблю задерживаться на одном проекте надолго — делаю всё, что хочу и не хочу...</p>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="stat-icon">🎮</div><strong id="stat-games">0</strong><span data-i18n="stat.games">Выпущено игр</span></div>
+        <div class="stat"><div class="stat-icon">🏆</div><strong id="stat-jams">0</strong><span data-i18n="stat.jams">Джемов</span></div>
+        <div class="stat"><div class="stat-icon">📅</div><strong id="stat-years">0</strong><span data-i18n="stat.years">Года разработки</span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="contact" class="footer container">
+  <div class="footer-inner">
+    <div>
+      <a class="logo" href="index.html"><div class="logo-mark"><img src="logo.png" alt="Vorongo"></div><div><b>VORONGO</b><span>GAME DEVELOPER</span></div></a>
+      <div class="copyright">© 2026 Vorongo</div>
+    </div>
+    <div>
+      <h4 data-i18n="footer.nav">Навигация</h4>
+      <a href="index.html" data-i18n="nav.home">Главная</a><br>
+      <a href="games.html" data-i18n="nav.games">Игры</a><br>
+      <a href="apps.html" data-i18n="nav.apps">Приложения</a><br>
+      <a href="jams.html" data-i18n="nav.jams">Джемы</a><br>
+      <a href="index.html#youtube" data-i18n="nav.youtube">YouTube</a><br>
+      <a href="index.html#about" data-i18n="nav.about">Обо мне</a>
+    </div>
+    <div>
+      <h4 data-i18n="footer.contact">Контакты</h4>
+      <a href="mailto:hello@vorongo.dev">Email</a><br>
+      <a href="https://play.google.com/store/apps/dev?id=7048963500827490623" target="_blank" rel="noopener">Google Play</a><br>
+      <a href="https://vorongo.itch.io" target="_blank" rel="noopener">itch.io</a><br>
+      <a href="https://discord.gg/KJyzR9sGmY" target="_blank" rel="noopener">Discord</a><br>
+      <a href="https://www.youtube.com/channel/UCgKDfPRw_y6-h7n-n7cfYMg" target="_blank" rel="noopener">YouTube</a>
+    </div>
+    <div>
+      <h4 data-i18n="footer.follow">Следите за мной</h4>
+      <div class="socials">
+        <a class="social" href="https://play.google.com/store/apps/dev?id=7048963500827490623" target="_blank" rel="noopener" title="Google Play"><img src="icons/google-play.svg" alt="Google Play"></a>
+        <a class="social" href="https://vorongo.itch.io" target="_blank" rel="noopener" title="itch.io"><img src="icons/itchio.svg" alt="itch.io"></a>
+        <a class="social" href="https://www.youtube.com/channel/UCgKDfPRw_y6-h7n-n7cfYMg" target="_blank" rel="noopener" title="YouTube"><img src="icons/youtube.svg" alt="YouTube"></a>
+        <a class="social" href="https://discord.gg/KJyzR9sGmY" target="_blank" rel="noopener" title="Discord"><img src="icons/discord.svg" alt="Discord"></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="i18n.js"></script>
+<script src="games-data.js"></script>
+<script src="youtube-api.js"></script>
+<script>
+const marqueeControllers=[];
+
+function enableDragScroll(marquee){
+  let dragging=false,moved=false,startX=0,startScroll=0;
+
+  marquee.addEventListener('pointerdown',e=>{
+    if(e.pointerType!=='mouse'||e.button!==0) return;
+    dragging=true;moved=false;
+    startX=e.clientX;startScroll=marquee.scrollLeft;
+    marquee.classList.add('is-dragging');
+    marquee.setPointerCapture(e.pointerId);
+  });
+
+  marquee.addEventListener('pointermove',e=>{
+    if(!dragging) return;
+    const dx=e.clientX-startX;
+    if(Math.abs(dx)>4) moved=true;
+    marquee.scrollLeft=startScroll-dx;
+  });
+
+  function endDrag(){
+    if(!dragging) return;
+    dragging=false;
+    marquee.classList.remove('is-dragging');
+    if(moved){
+      marquee.dataset.blockClick='1';
+      setTimeout(()=>{delete marquee.dataset.blockClick},0);
+    }
+  }
+
+  marquee.addEventListener('pointerup',endDrag);
+  marquee.addEventListener('pointercancel',endDrag);
+  marquee.addEventListener('lostpointercapture',endDrag);
+
+  marquee.addEventListener('click',e=>{
+    if(marquee.dataset.blockClick){
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  },true);
+
+  marquee.addEventListener('dragstart',e=>e.preventDefault());
+}
+
+function startAutoScroll(marquee,loop){
+  if(!loop) return null;
+  let paused=false,raf=0,last=0;
+  const speed=40;
+
+  marquee.addEventListener('pointerdown',()=>{paused=true});
+  marquee.addEventListener('pointerup',()=>{paused=false});
+  marquee.addEventListener('pointercancel',()=>{paused=false});
+  marquee.addEventListener('mouseenter',()=>{paused=true});
+  marquee.addEventListener('mouseleave',()=>{
+    if(!marquee.classList.contains('is-dragging')) paused=false;
+  });
+
+  function tick(ts){
+    if(!last) last=ts;
+    const dt=(ts-last)/1000;last=ts;
+    if(!paused&&!marquee.classList.contains('is-dragging')&&!document.hidden){
+      marquee.scrollLeft+=speed*dt;
+      const half=marquee.scrollWidth/2;
+      if(half>0&&marquee.scrollLeft>=half) marquee.scrollLeft-=half;
+    }
+    raf=requestAnimationFrame(tick);
+  }
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+    raf=requestAnimationFrame(tick);
+  }
+  return ()=>cancelAnimationFrame(raf);
+}
+
+function fillMarquee(marqueeId, trackId, items){
+  const marquee=document.getElementById(marqueeId);
+  const track=document.getElementById(trackId);
+  const html=items.map(renderGameCard).join('');
+  const loop=items.length>4;
+  track.innerHTML=loop?html+html:html;
+  marquee.classList.toggle('is-scrolling',loop);
+  marquee.scrollLeft=0;
+}
+
+function bindMarquees(){
+  marqueeControllers.forEach(stop=>stop&&stop());
+  marqueeControllers.length=0;
+  ['games-marquee','apps-marquee'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    if(!el.dataset.dragBound){
+      el.dataset.dragBound='1';
+      enableDragScroll(el);
+    }
+    marqueeControllers.push(startAutoScroll(el,el.classList.contains('is-scrolling')));
+  });
+}
+
+function setMoreVisible(id, count){
+  const el=document.getElementById(id);
+  if(el) el.hidden=count<4;
+}
+
+function renderGames(){
+  fillMarquee('games-marquee','games-grid',GAMES);
+  fillMarquee('apps-marquee','apps-grid',APPS);
+  document.getElementById('jams-list').innerHTML=JAMS.map(renderJamRow).join('');
+  setMoreVisible('games-more',GAMES.length);
+  setMoreVisible('apps-more',APPS.length);
+  setMoreVisible('jams-more',JAMS.length);
+  bindMarquees();
+}
+renderGames();
+document.addEventListener('langchange', ()=>{
+  renderGames();
+  const subsEl=document.getElementById('yt-subs');
+  const videosEl=document.getElementById('yt-videos');
+  if(subsEl&&subsEl.dataset.raw) subsEl.textContent=formatCount(subsEl.dataset.raw);
+  if(videosEl&&videosEl.dataset.raw) videosEl.textContent=formatCount(videosEl.dataset.raw);
+});
+
+const links=[...document.querySelectorAll('.navlinks a')];
+const sections=[...document.querySelectorAll('main section[id]')];
+window.addEventListener('scroll',()=>{
+  let current='home';
+  sections.forEach(s=>{if(scrollY >= s.offsetTop-130) current=s.id});
+  links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+current));
+});
+
+function updateStats(){
+  const released=GAMES.filter(g=>g.status==='released').length;
+  const jams=JAMS.length;
+  const start=new Date(2024,0,5);
+  const now=new Date();
+  let years=now.getFullYear()-start.getFullYear();
+  const anniversary=new Date(now.getFullYear(),start.getMonth(),start.getDate());
+  if(now<anniversary) years--;
+  if(years<0) years=0;
+  document.getElementById('stat-games').textContent=released;
+  document.getElementById('stat-jams').textContent=jams;
+  document.getElementById('stat-years').textContent=years+(now>=start?'+':'');
+}
+updateStats();
+
+const themeBtn=document.getElementById('theme-btn');
+function applyTheme(dark){
+  document.documentElement.classList.toggle('dark',dark);
+  document.documentElement.style.backgroundColor=dark?'#11161d':'#e8eef5';
+  const meta=document.querySelector('meta[name="theme-color"]');
+  if(meta)meta.content=dark?'#11161d':'#e8eef5';
+  themeBtn.textContent=dark?'☾':'☼';
+  localStorage.setItem('vorongo-theme',dark?'dark':'light');
+}
+applyTheme(localStorage.getItem('vorongo-theme')==='dark');
+themeBtn.addEventListener('click',()=>applyTheme(!document.documentElement.classList.contains('dark')));
+
+initLangToggle();
+initMobileNav();
+initHeroRotator();
+initHeroArtSlides();
+loadYouTubeStats();
+</script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+</body>
+</html>
