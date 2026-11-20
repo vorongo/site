@@ -227,7 +227,9 @@ a.jam:hover{background:var(--hover);border-radius:10px}
   display:grid;place-items:center;transition:.15s
 }
 .social:hover{background:var(--hover);transform:translateY(-1px)}
-.social img{width:18px;height:18px;display:block}
+.social img{width:18px;height:18px;display:block;filter:grayscale(1) contrast(1.1);opacity:.75;transition:.15s}
+.social:hover img{opacity:1}
+.dark .social img{filter:grayscale(1) invert(1) contrast(1.1)}
 .copyright{font-size:10px;color:var(--muted);margin-top:23px}
 
 @media(max-width:950px){
