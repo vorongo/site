@@ -282,3 +282,17 @@ a.jam:hover{background:var(--hover);border-radius:10px}
 .search-meta{font-size:12px;color:var(--muted);padding:4px 24px 12px}
 .games-empty{padding:40px 24px;text-align:center;color:var(--muted);font-size:14px}
 .page-main{padding-top:28px}
+/* ===== HUD / video style (matches Vorongo montage templates) =====
+   Oswald for headings, JetBrains Mono for HUD labels, sharper panels with corner brackets. */
+:root{--hud-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;--hud-display:"Oswald","Arial Narrow",sans-serif}
+h1,h2,.section-title,.hero h1{font-family:var(--hud-display);font-weight:600;letter-spacing:.01em}
+.section-title{text-transform:uppercase;font-size:18px}
+.pill,.status-chip,.section-head .more,.game .type,.logo span,.copyright,.social-label,.game .status,.game .tag{font-family:var(--hud-mono);letter-spacing:.02em}
+.panel{border-radius:8px;position:relative}
+.panel::before,.panel::after{content:"";position:absolute;width:14px;height:14px;border-color:var(--accent);border-style:solid;pointer-events:none;z-index:1}
+.panel::before{top:-1px;left:-1px;border-width:2px 0 0 2px;border-radius:8px 0 0 0}
+.panel::after{bottom:-1px;right:-1px;border-width:0 2px 2px 0;border-radius:0 0 8px 0}
+.game{border-radius:6px}
+.game:hover{border-color:var(--accent)}
+.btn{border-radius:6px;font-family:var(--hud-mono);text-transform:uppercase;letter-spacing:.04em;font-size:12px}
+.pill{border-radius:4px;text-transform:uppercase;font-size:11px}
