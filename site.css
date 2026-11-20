@@ -296,3 +296,30 @@ h1,h2,.section-title,.hero h1{font-family:var(--hud-display);font-weight:600;let
 .game:hover{border-color:var(--accent)}
 .btn{border-radius:6px;font-family:var(--hud-mono);text-transform:uppercase;letter-spacing:.04em;font-size:12px}
 .pill{border-radius:4px;text-transform:uppercase;font-size:11px}
+
+/* ===== Code-block panels (like the CodeEditor template in the videos) =====
+   Dark editor body, accent title bar, heavy ink border, hard shadow. */
+.panel{
+  --paper:#0f1620; --paper2:#131d2a; --ink:#e8edf4; --muted:#8a9bb3; --text-soft:#c8d0dc;
+  --line:#2a3a4f; --hover:#1a2638; --chip:#1a2638; --chip-line:#2a3a4f; --accent:#4a8fc9;
+  background:#0f1620; color:var(--ink);
+  border:3px solid #111820; border-radius:12px;
+  box-shadow:0 20px 50px rgba(17,24,32,.28);
+  overflow:hidden;
+}
+.panel::before,.panel::after{display:none}
+.panel .section-head{
+  background:var(--accent); color:#fff; margin:0; padding:14px 22px;
+  border-bottom:3px solid #111820; font-family:var(--hud-mono);
+}
+.panel .section-title,.panel .section-title .ico{color:#fff;font-family:var(--hud-mono);font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.02em}
+.panel .more{color:#fff;opacity:.9}
+.panel .more:hover{opacity:1}
+.panel .game{background:var(--paper);border:1px solid var(--line);border-radius:8px}
+.panel .game:hover{border-color:var(--accent)}
+.panel .game h3,.panel .game .title{color:var(--ink)}
+.panel .game p{color:var(--text-soft)}
+.panel .game .type{color:var(--muted)}
+.panel .btn,.panel .pill{background:var(--chip);color:var(--text-soft);border-color:var(--chip-line)}
+/* keep nav labels on one line with the mono font */
+.navlinks a,.nav a{white-space:nowrap}
