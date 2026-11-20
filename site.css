@@ -300,14 +300,14 @@ h1,h2,.section-title,.hero h1{font-family:var(--hud-display);font-weight:600;let
 /* ===== Code-editor panels (layout of the CodeEditor template in the videos) =====
    Accent title bar, heavy ink border, hard shadow. Colours stay the site's normal light theme. */
 .panel{
-  border:3px solid var(--ink); border-radius:12px;
+  border:1px solid var(--line); border-radius:12px;
   box-shadow:0 20px 50px rgba(17,24,32,.18);
   overflow:hidden;
 }
 .panel::before,.panel::after{display:none}
 .panel .section-head{
   background:var(--accent); color:#fff; margin:0; padding:14px 22px;
-  border-bottom:3px solid var(--ink); font-family:var(--hud-mono);
+  border-bottom:1px solid var(--line); font-family:var(--hud-mono);
 }
 .panel .section-title,.panel .section-title .ico{color:#fff;font-family:var(--hud-mono);font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.02em}
 .panel .more{color:#fff;opacity:.9}
