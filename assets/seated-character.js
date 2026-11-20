@@ -51,7 +51,7 @@ if (host) {
         }
       });
 
-      model.rotation.y = 0.7; // turn slightly to the right, away from the viewer
+      model.rotation.y = -0.7; // turn to the left, away from the viewer
       scene.add(model);
 
       // Start the sitting pose first: the seated figure is much shorter than the bind pose,
