@@ -120,7 +120,7 @@ html.dark .art-caption{background:rgba(17,24,32,.88);border-color:var(--line);co
    .seat-anchor has zero height, so the character takes no layout space.
    Tune --seat-size (canvas), --seat-left, --seat-drop (how far the legs hang below the edge). */
 .seat-anchor{position:relative;height:0}
-.games-seat{--seat-size:270px;--seat-left:30px;--seat-drop:120px;position:absolute;left:var(--seat-left);bottom:calc(-1 * var(--seat-drop));width:var(--seat-size);height:var(--seat-size);pointer-events:none;z-index:2}
+.games-seat{--seat-size:270px;--seat-left:-10px;--seat-drop:100px;position:absolute;left:var(--seat-left);bottom:calc(-1 * var(--seat-drop));width:var(--seat-size);height:var(--seat-size);pointer-events:none;z-index:2}
 .games-seat canvas{display:block;width:100%;height:100%}
 @media (max-width:700px){.games-seat{--seat-size:150px;--seat-left:-14px;--seat-drop:66px}}
 .section-head{display:flex;align-items:center;justify-content:space-between;padding:24px 24px 15px}
