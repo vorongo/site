@@ -14,7 +14,7 @@ if (host) {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 100);
-  camera.position.set(0, 0.6, 2.5);
+  camera.position.set(0, 0.5, 2.2);
   camera.lookAt(0, 0.5, 0);
 
   scene.add(new THREE.HemisphereLight(0xffffff, 0x445566, 2.2));
@@ -51,26 +51,38 @@ if (host) {
         }
       });
 
-      // Normalise: feet on y=0, centred on x/z, height 1.
-      const box = new THREE.Box3().setFromObject(model);
-      const size = box.getSize(new THREE.Vector3());
-      const k = 1 / size.y;
-      model.scale.multiplyScalar(k);
-      box.setFromObject(model);
+      model.rotation.y = 0.7; // turn slightly to the right, away from the viewer
+      scene.add(model);
+
+      // Start the sitting pose first: the seated figure is much shorter than the bind pose,
+      // so the size has to be measured from the animated skeleton, not the mesh bounds.
+      if (model.animations.length) {
+        mixer = new THREE.AnimationMixer(model);
+        mixer.clipAction(model.animations[0]).play();
+        mixer.update(0);
+      }
+
+      // Bone-based bounds (posed). Fit so the figure is ~95% of the canvas height,
+      // feet on y=0, centred on x/z.
+      const boneBounds = () => {
+        model.updateMatrixWorld(true);
+        const b = new THREE.Box3();
+        const p = new THREE.Vector3();
+        model.traverse((c) => { if (c.isBone) b.expandByPoint(c.getWorldPosition(p)); });
+        return b;
+      };
+      let box = boneBounds();
+      model.scale.multiplyScalar(0.95 / (box.max.y - box.min.y));
+      box = boneBounds();
       const center = box.getCenter(new THREE.Vector3());
       model.position.x -= center.x;
       model.position.z -= center.z;
       model.position.y -= box.min.y;
-      scene.add(model);
+      model.updateMatrixWorld(true);
 
-      if (model.animations.length) {
-        mixer = new THREE.AnimationMixer(model);
-        const action = mixer.clipAction(model.animations[0]);
-        action.play();
-        if (reduceMotion) {
-          mixer.update(1.0);
-          mixer.timeScale = 0;
-        }
+      if (mixer && reduceMotion) {
+        mixer.update(1.0);
+        mixer.timeScale = 0;
       }
       if (reduceMotion) renderer.render(scene, camera);
       else requestAnimationFrame(loop);
