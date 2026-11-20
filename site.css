@@ -115,7 +115,11 @@ html.dark .art-caption{background:rgba(17,24,32,.88);border-color:var(--line);co
 .art-caption.is-fading{opacity:0}
 
 .section{padding:14px 0}
-.panel{background:var(--paper);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);position:relative}
+/* Character sitting on the top edge of the games panel. Tune --seat-x / --seat-lift. */
+.games-seat{--seat-x:78%;--seat-lift:-52px;position:absolute;left:var(--seat-x);bottom:calc(100% - 4px + var(--seat-lift));width:190px;height:190px;transform:translateX(-50%);pointer-events:none;z-index:2}
+.games-seat canvas{display:block;width:100%;height:100%}
+@media (max-width:700px){.games-seat{width:140px;height:140px;--seat-x:94%}}
 .section-head{display:flex;align-items:center;justify-content:space-between;padding:24px 24px 15px}
 .section-title{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:750}
 .section-title .ico{font-size:19px}
