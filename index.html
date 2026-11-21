@@ -207,8 +207,9 @@
     </div>
   </section>
   <section id="timeline" class="section container" aria-labelledby="timeline-heading">
-    <div class="timeline-heading"><div><div class="eyebrow">VORONGO / ARCHIVE</div><h2 id="timeline-heading">История проектов</h2><p>Пунктир — проект ещё в разработке, он тянется до сегодняшней даты. Сплошная полоса — известный период активной работы. Серым — отменённые и приостановленные.</p></div><span class="timeline-count" id="timeline-count"></span></div>
-    <div class="gantt-wrap"><div class="gantt" id="gantt"></div></div>
+    <div class="timeline-heading"><div><div class="eyebrow">VORONGO / ARCHIVE</div><h2 id="timeline-heading">История проектов</h2><p>Пунктир — проект ещё в разработке, он тянется до сегодняшней даты. Сплошная полоса — известный период работы. Серым — отменённые и приостановленные.</p></div><span class="timeline-count" id="timeline-count"></span></div>
+    <div class="gantt-wrap" id="gantt-wrap"><div class="gantt" id="gantt"></div></div>
+    <div class="gantt-scroll" id="gantt-scroll" aria-hidden="true"><div class="gantt-thumb" id="gantt-thumb"></div></div>
     <div class="gantt-legend">
       <span><i class="gantt-key done"></i>Разработка завершена</span>
       <span><i class="gantt-key ongoing"></i>В разработке</span>
@@ -216,32 +217,40 @@
       <span><i class="gantt-key canceled"></i>Отменена</span>
     </div>
     <style>
-      .gantt-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:var(--paper);box-shadow:var(--shadow);margin-top:18px;-webkit-overflow-scrolling:touch}
-      .gantt{position:relative;padding:6px 0 14px}
-      .gantt-head{position:relative;height:30px}
-      .gantt-yr{position:absolute;top:4px;font-size:13px;font-weight:800;color:var(--text-soft);padding-left:8px}
+      .gantt-wrap{overflow-x:auto;overflow-y:hidden;border:1px solid var(--line);border-radius:18px;background:var(--paper);box-shadow:var(--shadow);margin-top:18px;cursor:grab;scrollbar-width:none;-ms-overflow-style:none;user-select:none}
+      .gantt-wrap::-webkit-scrollbar{display:none}
+      .gantt-wrap.dragging{cursor:grabbing}
+      .gantt-wrap img{-webkit-user-drag:none;pointer-events:none}
+      .gantt{position:relative;padding:4px 0 14px}
+      .gantt-head{position:relative;height:28px}
+      .gantt-yr{position:absolute;top:4px;font-size:13px;font-weight:800;color:var(--text-soft);padding-left:10px;letter-spacing:.02em}
       .gantt-body{position:relative;background-image:repeating-linear-gradient(to right,var(--line) 0 1px,transparent 1px 110px);border-top:1px solid var(--line)}
-      .gantt-yline{position:absolute;top:0;bottom:0;width:0;border-left:1px dashed var(--muted);opacity:.7}
-      .gantt-today{position:absolute;top:0;bottom:0;width:0;border-left:1px dashed var(--accent);opacity:.8}
-      .gantt-card{position:absolute;display:flex;align-items:center;gap:8px;width:190px;height:34px;padding:3px 8px 3px 3px;background:var(--paper);border:1px solid var(--line);border-radius:10px;box-shadow:0 3px 10px rgba(0,0,0,.06);color:var(--ink);text-decoration:none;font-size:12px;font-weight:750;white-space:nowrap;box-sizing:border-box}
-      .gantt-card:hover{border-color:var(--accent)}
-      .gantt-card img{width:28px;height:28px;border-radius:6px;object-fit:cover;flex:none}
-      .gantt-card .gantt-fake{width:28px;height:28px;border-radius:6px;display:grid;place-items:center;background:var(--soft);flex:none;font-size:14px}
+      .gantt-yline{position:absolute;top:0;bottom:0;width:0;border-left:1px dashed var(--accent);opacity:.45}
+      .gantt-today{position:absolute;top:0;bottom:0;width:0;border-left:1.5px solid var(--accent);opacity:.9;box-shadow:0 0 10px rgba(74,143,201,.6)}
+      .gantt-card{position:absolute;display:flex;align-items:center;gap:8px;width:190px;height:34px;padding:3px 10px 3px 3px;background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:0 4px 14px rgba(0,0,0,.08);color:var(--ink);text-decoration:none;font-size:12px;font-weight:750;white-space:nowrap;box-sizing:border-box;transition:border-color .15s,transform .15s}
+      .gantt-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+      .gantt-card img{width:28px;height:28px;border-radius:7px;object-fit:cover;flex:none}
+      .gantt-card .gantt-fake{width:28px;height:28px;border-radius:7px;display:grid;place-items:center;background:var(--soft);flex:none;font-size:14px}
       .gantt-card span{overflow:hidden;text-overflow:ellipsis}
-      .gantt-seg{position:absolute;height:8px;border-radius:5px}
-      .gantt-seg.done{background:var(--green)}
-      .gantt-seg.canceled{background:var(--muted);opacity:.55}
-      .gantt-seg.ongoing{height:3px;background:repeating-linear-gradient(90deg,var(--accent) 0 9px,transparent 9px 14px)}
-      .gantt-seg.paused{height:3px;background:repeating-linear-gradient(90deg,var(--muted) 0 9px,transparent 9px 14px)}
-      .gantt-dot{position:absolute;width:14px;height:14px;border-radius:50%;background:var(--accent);border:2px solid var(--paper);transform:translate(-50%,-50%);box-shadow:0 0 0 1px var(--line)}
+      .gantt-conn{position:absolute;height:2px;border-radius:2px;background:var(--accent);opacity:.6}
+      .gantt-seg{position:absolute;border-radius:6px}
+      .gantt-seg.done{height:8px;background:linear-gradient(90deg,#8fc793,var(--green));box-shadow:0 0 10px rgba(121,167,127,.35)}
+      .gantt-seg.canceled{height:8px;background:var(--muted);opacity:.55}
+      .gantt-seg.ongoing{height:4px;border-radius:4px;background:repeating-linear-gradient(90deg,var(--accent) 0 10px,transparent 10px 16px);box-shadow:0 0 8px rgba(74,143,201,.45)}
+      .gantt-seg.paused{height:4px;border-radius:4px;background:repeating-linear-gradient(90deg,var(--muted) 0 10px,transparent 10px 16px);opacity:.8}
+      .gantt-dot{position:absolute;width:14px;height:14px;border-radius:50%;border:3px solid var(--paper);box-shadow:0 0 0 1px var(--line);box-sizing:content-box}
       .gantt-dot.done{background:var(--green)}
-      .gantt-date{position:absolute;font-size:10px;color:var(--muted);white-space:nowrap}
+      .gantt-dot.ongoing{background:var(--accent)}
+      .gantt-dot.paused,.gantt-dot.canceled{background:var(--muted)}
+      .gantt-date{position:absolute;font-size:10px;color:var(--muted);white-space:nowrap;font-weight:600}
+      .gantt-scroll{position:relative;height:8px;margin-top:14px;border-radius:99px;background:var(--soft);border:1px solid var(--line);cursor:pointer}
+      .gantt-thumb{position:absolute;top:0;bottom:0;left:0;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2));box-shadow:0 0 14px rgba(74,143,201,.5);cursor:grab}
       .gantt-legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:14px;font-size:12px;color:var(--text-soft)}
       .gantt-legend span{display:inline-flex;align-items:center;gap:8px}
-      .gantt-key{display:inline-block;width:26px;height:8px;border-radius:5px}
-      .gantt-key.done{background:var(--green)}
-      .gantt-key.ongoing{height:3px;background:repeating-linear-gradient(90deg,var(--accent) 0 9px,transparent 9px 14px)}
-      .gantt-key.paused{height:3px;background:repeating-linear-gradient(90deg,var(--muted) 0 9px,transparent 9px 14px)}
+      .gantt-key{display:inline-block;width:28px;height:8px;border-radius:6px}
+      .gantt-key.done{background:linear-gradient(90deg,#8fc793,var(--green))}
+      .gantt-key.ongoing{height:4px;border-radius:4px;background:repeating-linear-gradient(90deg,var(--accent) 0 10px,transparent 10px 16px)}
+      .gantt-key.paused{height:4px;border-radius:4px;background:repeating-linear-gradient(90deg,var(--muted) 0 10px,transparent 10px 16px)}
       .gantt-key.canceled{background:var(--muted);opacity:.55}
     </style>
   </section>
@@ -288,17 +297,17 @@
 <script src="youtube-api.js"></script>
 <script>
 (function(){
-  const host=document.getElementById('gantt');
-  if(!host||!window.GAMES)return;
-  const QW=110, W=QW*12, LANE=84, CARD=190;
-  const MIN=Date.UTC(2024,0,1), MAX=Date.UTC(2027,0,1);
+  const wrap=document.getElementById('gantt-wrap'), host=document.getElementById('gantt');
+  const track=document.getElementById('gantt-scroll'), thumb=document.getElementById('gantt-thumb');
+  if(!wrap||!host||!window.GAMES)return;
+  const QW=110, NQ=14, W=QW*NQ, GAP=22, CARD=190, LANE=86;
+  const MIN=Date.UTC(2023,6,1), MAX=Date.UTC(2027,0,1);
   const parse=s=>Date.parse(s+'T00:00:00Z');
   const now=new Date(), TODAY=Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate());
   const xOf=ms=>Math.max(0,Math.min(W,(ms-MIN)/(MAX-MIN)*W));
   const ru=(navigator.language||'ru').startsWith('ru');
   const fmt=ms=>new Date(ms).toLocaleDateString(ru?'ru-RU':'en-US',{month:'short',year:'numeric',timeZone:'UTC'});
-  // Segments: 'done' solid, 'ongoing' dashed (in development, runs to today), 'paused' grey dashed, 'canceled' grey solid.
-  // Jam games with no known activity are plain start dots (completed).
+  // st: done (solid green), ongoing (dashed blue, runs to today), paused (grey dashed), canceled (grey solid)
   const ROWS=[
     {t:'Midnight Mage', s:'2024-01-01', seg:[], jam:true},
     {t:'Realm Rift: The Awakening', s:'2024-09-28', seg:[{f:'2024-09-28',to:'2024-10-06',st:'done'},{f:'2024-10-06',to:'today',st:'paused'}]},
@@ -318,43 +327,89 @@
   const lastRight=[];
   const placed=ROWS.map(r=>{
     const g=all.find(x=>x.title===r.t)||{};
-    const left=xOf(parse(r.s));
-    let li=lastRight.findIndex(v=>v<left-12);
+    const sx=xOf(parse(r.s));
+    const endX=r.seg.length?(r.seg[r.seg.length-1].to==='today'?xOf(TODAY):xOf(parse(r.seg[r.seg.length-1].to))):sx;
+    const left=sx-GAP-CARD, right=Math.max(sx,endX)+120;
+    let li=lastRight.findIndex(v=>v<left-10);
     if(li<0){li=lastRight.length;lastRight.push(-1e9)}
-    lastRight[li]=Math.max(left+CARD, left+140);
-    return {...r,g,left,li};
+    lastRight[li]=right;
+    return {...r,g,sx,li};
   });
-  const lanes=Math.max(1,lastRight.length);
-  const H=lanes*LANE+20;
+  const H=Math.max(1,lastRight.length)*LANE+14;
   const todayX=xOf(TODAY);
-  let head='<div class="gantt-head" style="width:'+W+'px">';
-  for(let y=2024;y<=2026;y++)head+='<span class="gantt-yr" style="left:'+xOf(Date.UTC(y,0,1))+'px">'+y+'</span>';
-  head+='</div>';
-  let body='<div class="gantt-body" style="width:'+W+'px;height:'+H+'px">';
-  for(let y=2024;y<=2026;y++)body+='<span class="gantt-yline" style="left:'+xOf(Date.UTC(y,0,1))+'px"></span>';
-  body+='<span class="gantt-today" style="left:'+todayX+'px"></span>';
+  let html='<div class="gantt-head" style="width:'+W+'px">';
+  for(let y=2024;y<=2026;y++)html+='<span class="gantt-yr" style="left:'+xOf(Date.UTC(y,0,1))+'px">'+y+'</span>';
+  html+='</div><div class="gantt-body" style="width:'+W+'px;height:'+H+'px">';
+  for(let y=2024;y<=2026;y++)html+='<span class="gantt-yline" style="left:'+xOf(Date.UTC(y,0,1))+'px"></span>';
+  html+='<span class="gantt-today" style="left:'+todayX+'px"></span>';
   placed.forEach(r=>{
-    const top=6+r.li*LANE, barY=top+50;
-    const cover=r.g.cover, href=r.g.href||'#';
-    const icon=cover?'<img src="'+cover+'" alt="" loading="lazy">':'<span class="gantt-fake">'+(r.g.fake||'🎮')+'</span>';
-    body+='<a class="gantt-card" href="'+href+'" target="_blank" rel="noopener" style="left:'+r.left+'px;top:'+top+'px">'+icon+'<span>'+r.t+'</span></a>';
-    let dateText;
+    const laneTop=8+r.li*LANE, mid=laneTop+44, sx=r.sx;
+    const icon=r.g.cover?'<img src="'+r.g.cover+'" alt="" loading="lazy" draggable="false">':'<span class="gantt-fake">'+(r.g.fake||'🎮')+'</span>';
+    html+='<a class="gantt-card" href="'+(r.g.href||'#')+'" target="_blank" rel="noopener" draggable="false" style="left:'+(sx-GAP-CARD)+'px;top:'+(mid-17)+'px">'+icon+'<span>'+r.t+'</span></a>';
+    html+='<span class="gantt-conn" style="left:'+(sx-GAP)+'px;top:'+(mid-1)+'px;width:'+GAP+'px"></span>';
+    let dateText, dotSt='done';
     if(r.seg.length){
       r.seg.forEach(s=>{
         const fx=xOf(parse(s.f)), tx=s.to==='today'?todayX:xOf(parse(s.to));
-        body+='<span class="gantt-seg '+s.st+'" style="left:'+fx+'px;width:'+Math.max(6,tx-fx)+'px;top:'+(barY-4)+'px"></span>';
+        const h=(s.st==='done'||s.st==='canceled')?8:4;
+        html+='<span class="gantt-seg '+s.st+'" style="left:'+fx+'px;width:'+Math.max(6,tx-fx)+'px;top:'+(mid-h/2)+'px"></span>';
       });
+      dotSt=r.seg[0].st;
       const last=r.seg[r.seg.length-1];
       dateText=fmt(parse(r.s))+(last.to==='today'?' → сейчас':' – '+fmt(parse(last.to)));
     }else{
       dateText=fmt(parse(r.s));
     }
-    body+='<span class="gantt-dot'+(r.jam?' done':'')+'" style="left:'+r.left+'px;top:'+barY+'px"></span>';
-    body+='<span class="gantt-date" style="left:'+(r.left+8)+'px;top:'+(barY+8)+'px">'+dateText+'</span>';
+    html+='<span class="gantt-dot '+dotSt+'" style="left:'+(sx-7)+'px;top:'+(mid-7)+'px"></span>';
+    html+='<span class="gantt-date" style="left:'+(sx-4)+'px;top:'+(mid+12)+'px">'+dateText+'</span>';
   });
-  body+='</div>';
+  html+='</div>';
   host.style.width=W+'px';
-  host.innerHTML=head+body;
+  host.innerHTML=html;
+
+  // mouse drag to scroll the chart sideways
+  let drag=null, moved=false;
+  wrap.addEventListener('pointerdown',e=>{
+    if(e.pointerType!=='mouse'||e.button!==0)return;
+    drag={x:e.clientX,s:wrap.scrollLeft}; moved=false; wrap.classList.add('dragging');
+  });
+  window.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const dx=e.clientX-drag.x; if(Math.abs(dx)>4)moved=true;
+    wrap.scrollLeft=drag.s-dx;
+  });
+  window.addEventListener('pointerup',()=>{drag=null;wrap.classList.remove('dragging')});
+  wrap.addEventListener('click',e=>{if(moved){e.preventDefault();e.stopPropagation();moved=false}},true);
+  wrap.addEventListener('dragstart',e=>e.preventDefault());
+
+  // custom scrollbar with the same look as the rest of the site
+  const maxScroll=()=>Math.max(0,wrap.scrollWidth-wrap.clientWidth);
+  function sync(){
+    const tw=track.clientWidth, cw=wrap.clientWidth, sw=wrap.scrollWidth;
+    const tl=Math.max(48,tw*cw/sw);
+    const left=maxScroll()?(wrap.scrollLeft/maxScroll())*(tw-tl):0;
+    thumb.style.width=tl+'px';
+    thumb.style.transform='translateX('+left+'px)';
+  }
+  wrap.addEventListener('scroll',sync,{passive:true});
+  window.addEventListener('resize',sync);
+  let tdrag=null;
+  thumb.addEventListener('pointerdown',e=>{tdrag={x:e.clientX,s:wrap.scrollLeft};thumb.setPointerCapture(e.pointerId)});
+  thumb.addEventListener('pointermove',e=>{
+    if(!tdrag)return;
+    const tw=track.clientWidth, tl=thumb.offsetWidth;
+    wrap.scrollLeft=tdrag.s+(e.clientX-tdrag.x)*(maxScroll()/Math.max(1,tw-tl));
+  });
+  thumb.addEventListener('pointerup',()=>{tdrag=null});
+  track.addEventListener('click',e=>{
+    if(e.target===thumb)return;
+    const r=track.getBoundingClientRect(), tl=thumb.offsetWidth;
+    wrap.scrollLeft=((e.clientX-r.left-tl/2)/Math.max(1,r.width-tl))*maxScroll();
+  });
+
+  // start with today in view
+  wrap.scrollLeft=Math.max(0,todayX-wrap.clientWidth*0.6);
+  sync();
   const count=document.getElementById('timeline-count');
   if(count)count.textContent=ROWS.length+' проектов';
 })();
