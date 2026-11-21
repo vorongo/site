@@ -47,7 +47,7 @@
 </style>
 <style>
 /* Shared project timeline: one axis, with game covers alternating around it. */
-.project-timeline{min-width:1100px;padding:30px 28px 24px}.timeline-canvas{height:560px;width:1000px;position:relative;margin:0 auto}.timeline-main-axis{position:absolute;left:0;right:0;top:8px;height:3px;background:var(--line)}.timeline-main-year{position:absolute;top:19px;transform:translateX(-50%);font-size:12px;font-weight:800;color:var(--muted)}.timeline-main-year:before{content:"";position:absolute;top:-11px;left:50%;height:9px;border-left:1px solid var(--muted)}.timeline-event{position:absolute;transform:translateX(-50%);display:flex;align-items:center;gap:7px;width:138px;padding:5px 7px;background:var(--paper);border:1px solid var(--line);border-radius:10px;z-index:2;color:var(--ink);text-decoration:none;font-size:11px;font-weight:750;line-height:1.2;box-shadow:0 3px 10px rgba(0,0,0,.06)}.timeline-event:hover{border-color:var(--accent);z-index:5;transform:translateX(-50%) scale(1.06)}.timeline-event img{width:32px;height:32px;object-fit:cover;border-radius:6px;flex:none}.timeline-event span{overflow:hidden;text-overflow:ellipsis}.timeline-stem{position:absolute;width:1px;border-left:1px dashed var(--accent);z-index:1}.timeline-main-dot,.timeline-end-dot{position:absolute;top:172px;width:17px;height:17px;border-radius:50%;transform:translateX(-50%);background:var(--accent);border:3px solid var(--paper);z-index:3;box-shadow:0 0 0 1px var(--line)}.timeline-end-dot{background:var(--text-soft)}.timeline-duration{position:absolute;top:177px;height:8px;background:var(--accent);border-radius:5px;opacity:.65}.timeline-undated{padding:0 8px 8px}.timeline-track,.timeline-axis{display:none}
+.project-timeline{min-width:1100px;padding:30px 28px 24px}.timeline-canvas{height:580px;width:1000px;position:relative;margin:0 auto}.timeline-main-axis{position:absolute;left:0;right:0;top:8px;height:3px;background:var(--line)}.timeline-main-year{position:absolute;top:19px;transform:translateX(-50%);font-size:12px;font-weight:800;color:var(--muted)}.timeline-main-year:before{content:"";position:absolute;top:-11px;left:50%;height:9px;border-left:1px solid var(--muted)}.timeline-event{position:absolute;transform:translateX(-50%);display:flex;align-items:center;gap:7px;width:138px;padding:5px 7px;background:var(--paper);border:1px solid var(--line);border-radius:10px;z-index:2;color:var(--ink);text-decoration:none;font-size:11px;font-weight:750;line-height:1.2;box-shadow:0 3px 10px rgba(0,0,0,.06)}.timeline-event:hover{border-color:var(--accent);z-index:5;transform:translateX(-50%) scale(1.06)}.timeline-event img{width:32px;height:32px;object-fit:cover;border-radius:6px;flex:none}.timeline-event span{overflow:hidden;text-overflow:ellipsis}.timeline-stem{position:absolute;width:1px;border-left:1px dashed var(--accent);z-index:1}.timeline-main-dot,.timeline-end-dot{position:absolute;top:172px;width:17px;height:17px;border-radius:50%;transform:translateX(-50%);background:var(--accent);border:3px solid var(--paper);z-index:3;box-shadow:0 0 0 1px var(--line)}.timeline-end-dot{background:var(--text-soft)}.timeline-duration{position:absolute;top:177px;height:8px;background:var(--accent);border-radius:5px;opacity:.65}.timeline-undated{padding:0 8px 8px}.timeline-track,.timeline-axis{display:none}
 </style><style>
 /* Match site controls and keep the project axis genuinely scrollable. */
 .timeline-controls input[type="range"]{appearance:none;-webkit-appearance:none;height:10px;border:1px solid var(--line);border-radius:999px;background:var(--soft);cursor:pointer;outline:none}
@@ -58,7 +58,7 @@
 .project-timeline{min-width:1810px}
 .timeline-canvas{width:1740px}
 .timeline-event{width:126px}
-</style><style>.timeline-layout{scrollbar-width:none;-ms-overflow-style:none}.timeline-layout::-webkit-scrollbar{display:none}.timeline-main-dot,.timeline-end-dot{z-index:4}</style><style>.timeline-canvas{height:560px}.timeline-main-dot,.timeline-end-dot{z-index:6}.timeline-duration{z-index:3}.timeline-event{z-index:7}.timeline-stem{pointer-events:none;opacity:.45}</style><style>.timeline-layout{cursor:grab;user-select:none}.timeline-layout.is-dragging{cursor:grabbing}.timeline-layout a{user-select:none}.timeline-layout.is-dragging a{pointer-events:none}</style></head>
+</style><style>.timeline-layout{scrollbar-width:none;-ms-overflow-style:none}.timeline-layout::-webkit-scrollbar{display:none}.timeline-main-dot,.timeline-end-dot{z-index:4}</style><style>.timeline-canvas{height:580px}.timeline-main-dot,.timeline-end-dot{z-index:6}.timeline-duration{z-index:3}.timeline-event{z-index:7}.timeline-stem{pointer-events:none;opacity:.45}</style><style>.timeline-layout{cursor:grab;user-select:none}.timeline-layout.is-dragging{cursor:grabbing}.timeline-layout a{user-select:none}.timeline-layout.is-dragging a{pointer-events:none}</style></head>
 <body data-title-key="doc.title">
 
 <header class="nav">
@@ -284,13 +284,13 @@
  known.forEach((g,i)=>{
    const d=dates[g.title],sx=x(d.start),ex=d.end?x(d.end):sx;
    // Separate dedicated horizontal lanes prevent unrelated project segments crossing.
-   const lanes=[118,190,330,405,480];
-   let li=lanes.findIndex((_,k)=>sx-laneLast[k]>150);if(li<0)li=laneLast.indexOf(Math.min(...laneLast));laneLast[li]=Math.max(sx,ex);const pointY=lanes[li],above=pointY<260;
-   const labelY=above?pointY-58:pointY+19;const barY=labelY-10;
+   const lanes=[138,210,350,425,500];
+   let li=lanes.findIndex((_,k)=>sx-laneLast[k]>150);if(li<0)li=laneLast.indexOf(Math.min(...laneLast));laneLast[li]=Math.max(sx,ex);const pointY=lanes[li],above=pointY<280;
+   const labelY=above?pointY-58:pointY+19;const barY=labelY-30;
    const dateLabel=d.yearOnly?d.start.slice(0,4):d.start;
    const tooltip=(en?'First recorded: ':'Первая известная дата: ')+dateLabel+(d.end?' · '+(en?'Last update: ':'Последнее обновление: ')+d.end:'');
    html+='<a class="timeline-event" href="'+esc(g.href)+'" target="_blank" rel="noopener" title="'+esc(tooltip)+'" style="left:'+sx+'px;top:'+labelY+'px">'+(g.cover?'<img src="'+esc(g.cover)+'" alt="">':'')+'<span>'+esc(g.title)+'</span></a>';
-   html+='<span class="timeline-stem" style="left:'+sx+'px;top:'+(above?labelY+45:pointY)+'px;height:'+(above?Math.max(0,pointY-labelY-45):19)+'px"></span>';
+   html+='<span class="timeline-stem" style="left:'+sx+'px;top:'+(barY+13)+'px;height:'+(labelY-barY-13)+'px"></span>';
    html+='<span class="timeline-main-dot" style="left:'+sx+'px;top:'+(barY-4)+'px" title="'+esc(tooltip)+'"></span>';
    if(d.end){html+='<span class="timeline-duration" style="left:'+sx+'px;top:'+barY+'px;width:'+(ex-sx)+'px"></span><span class="timeline-end-dot" style="left:'+ex+'px;top:'+(barY-4)+'px" title="'+esc(d.end)+'"></span>';}
   });
