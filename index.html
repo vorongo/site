@@ -253,6 +253,21 @@
       .gantt-key.ongoing{height:4px;border-radius:4px;background:repeating-linear-gradient(90deg,var(--accent) 0 10px,transparent 10px 16px)}
       .gantt-key.paused,.gantt-key.prototype{height:4px;border-radius:4px;background:repeating-linear-gradient(90deg,var(--muted) 0 10px,transparent 10px 16px)}
       .gantt-key.canceled{background:var(--muted);opacity:.55}
+      .gantt-seg{height:13px;border-radius:999px;opacity:1}
+      .gantt-seg.done{background:linear-gradient(90deg,#4ade80,#22c55e);box-shadow:0 0 14px rgba(74,222,128,.45)}
+      .gantt-seg.ongoing{background:repeating-linear-gradient(45deg,#38bdf8 0 5px,rgba(56,189,248,0) 5px 11px),rgba(56,189,248,.16);box-shadow:0 0 14px rgba(56,189,248,.35)}
+      .gantt-seg.paused,.gantt-seg.prototype{background:repeating-linear-gradient(45deg,#94a3b8 0 5px,rgba(148,163,184,0) 5px 11px),rgba(148,163,184,.14);box-shadow:none}
+      .gantt-seg.canceled{background:#64748b;opacity:.75;box-shadow:none}
+      .gantt-tick{position:absolute;width:3px;height:16px;border-radius:2px}
+      .gantt-tick.done{background:#4ade80;box-shadow:0 0 10px rgba(74,222,128,.6)}
+      .gantt-tick.ongoing{background:#38bdf8}
+      .gantt-tick.paused,.gantt-tick.prototype,.gantt-tick.canceled{background:#94a3b8}
+      .gantt-key{width:36px;height:13px;border-radius:999px}
+      .gantt-key.done{background:linear-gradient(90deg,#4ade80,#22c55e)}
+      .gantt-key.ongoing,.gantt-key.paused,.gantt-key.prototype{height:13px;border-radius:999px}
+      .gantt-key.ongoing{background:repeating-linear-gradient(45deg,#38bdf8 0 5px,rgba(56,189,248,0) 5px 11px),rgba(56,189,248,.16)}
+      .gantt-key.paused,.gantt-key.prototype{background:repeating-linear-gradient(45deg,#94a3b8 0 5px,rgba(148,163,184,0) 5px 11px),rgba(148,163,184,.14)}
+      .gantt-key.canceled{background:#64748b;opacity:.75}
     </style>
   </section>
 </main>
@@ -353,7 +368,7 @@
     if(r.seg.length){
       r.seg.forEach(s=>{
         const fx=xOf(parse(s.f)), tx=s.to==='today'?todayX:xOf(parse(s.to));
-        const h=(s.st==='done'||s.st==='canceled')?8:4;
+        const h=13;
         html+='<span class="gantt-seg '+s.st+'" style="left:'+fx+'px;width:'+Math.max(6,tx-fx)+'px;top:'+(mid-h/2)+'px"></span>';
       });
       dotSt=r.seg[0].st;
@@ -362,7 +377,7 @@
     }else{
       dateText=fmt(parse(r.s));
     }
-    html+='<span class="gantt-dot '+dotSt+'" style="left:'+(sx-7)+'px;top:'+(mid-7)+'px"></span>';
+    if(!r.seg.length)html+='<span class="gantt-tick '+dotSt+'" style="left:'+(sx-1)+'px;top:'+(mid-8)+'px"></span>';
     html+='<span class="gantt-date" style="left:'+(sx-4)+'px;top:'+(mid+12)+'px">'+dateText+'</span>';
   });
   html+='</div>';
