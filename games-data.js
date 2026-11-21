@@ -155,7 +155,7 @@ window.GAMES = [
     cover: "https://img.itch.zone/aW1nLzE3NzA0NjY1LnBuZw==/original/87RFfC.png",
     store: "itch.io",
     status: "paused"
-  }
+  },
   {
     title: "DestructiTiles",
     type: { ru: "Ассеты · Тайлсет", en: "Assets · Tileset" },
