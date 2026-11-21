@@ -154,7 +154,7 @@ window.GAMES = [
     href: "https://vorongo.itch.io/hooked",
     cover: "https://img.itch.zone/aW1nLzE5OTcyNDE2LnBuZw==/original/cwFjj2.png",
     store: "itch.io",
-    status: "dev",
+    status: "paused",
     published: "2025-02-22"
   },
   {
@@ -167,7 +167,7 @@ window.GAMES = [
     href: "https://vorongo.itch.io/midnight-mage-redux",
     cover: "https://img.itch.zone/aW1nLzIwMDUxODc0LnBuZw==/original/mnNdi8.png",
     store: "itch.io",
-    status: "paused",
+    status: "canceled",
     published: "2025-02-17",
     updated: "2025-02-26"
   },
@@ -181,7 +181,7 @@ window.GAMES = [
     href: "https://vorongo.itch.io/tap-a-cat",
     cover: "https://img.itch.zone/aW1nLzE4NDQ2NTA0LnBuZw==/original/bBsvyy.png",
     store: "itch.io",
-    status: "dev",
+    status: "canceled",
     published: "2024-11-03",
     updated: "2024-11-10"
   },
@@ -209,7 +209,7 @@ window.GAMES = [
     href: "https://vorongo.itch.io/realm-rift-the-awakening",
     cover: "https://img.itch.zone/aW1nLzE3NzA0NjY1LnBuZw==/original/87RFfC.png",
     store: "itch.io",
-    status: "paused",
+    status: "canceled",
     published: "2024-09-28",
     updated: "2024-10-06"
   }

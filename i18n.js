@@ -91,7 +91,8 @@ window.I18N = {
     "status.dev": "В РАЗРАБОТКЕ ↗",
     "status.for-jam": "ДЛЯ ДЖЕМА ◇",
     "status.paused": "ПРИОСТАНОВЛЕНА ‖",
-  "status.prototype": "ПРОТОТИП ◈"
+  "status.prototype": "ПРОТОТИП ◈",
+  "status.canceled": "ОТМЕНЕНА ✕"
   },
   en: {
     "doc.title": "Vorongo - Game Developer",
@@ -185,7 +186,8 @@ window.I18N = {
     "status.dev": "IN DEVELOPMENT ↗",
     "status.for-jam": "JAM GAME ◇",
     "status.paused": "ON HOLD ‖",
-  "status.prototype": "PROTOTYPE ◈"
+  "status.prototype": "PROTOTYPE ◈",
+  "status.canceled": "CANCELED ✕"
   }
 };
 
