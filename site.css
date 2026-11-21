@@ -233,6 +233,8 @@ a.jam:hover{background:var(--hover);border-radius:10px}
 .social img{width:18px;height:18px;display:block;filter:grayscale(1) contrast(1.1);opacity:.75;transition:.15s}
 .social:hover img{opacity:1}
 .dark .social img{filter:grayscale(1) invert(1) contrast(1.1)}
+.game-dates{font-size:11px;color:var(--muted);margin:6px 0 8px;line-height:1.6}
+.game-dates span{white-space:nowrap}
 .copyright{font-size:10px;color:var(--muted);margin-top:23px}
 
 @media(max-width:950px){

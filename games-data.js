@@ -145,30 +145,6 @@ window.GAMES = [
     placeWin: true
   },
   {
-    title: "Realm Rift: The Awakening",
-    type: { ru: "Командный проект", en: "Team project" },
-    desc: {
-      ru: "Совместная разработка. Сейчас проект приостановлен.",
-      en: "A collaborative project. Currently on hold."
-    },
-    href: "https://vorongo.itch.io/realm-rift-the-awakening",
-    cover: "https://img.itch.zone/aW1nLzE3NzA0NjY1LnBuZw==/original/87RFfC.png",
-    store: "itch.io",
-    status: "paused"
-  },
-  {
-    title: "DestructiTiles",
-    type: { ru: "Ассеты · Тайлсет", en: "Assets · Tileset" },
-    desc: {
-      ru: "Разрушаемые тайлы с параллакс-фоном.",
-      en: "Destructible tiles with a parallax background."
-    },
-    href: "https://vorongo.itch.io/destructitiles",
-    cover: "https://img.itch.zone/aW1nLzIwMTA0NzU2LnBuZw==/original/FSwP7k.png",
-    store: "itch.io",
-    status: "paused"
-  },
-  {
     title: "Hooked",
     type: { ru: "Хоррор · Рыбалка", en: "Horror · Fishing" },
     desc: {
@@ -178,7 +154,8 @@ window.GAMES = [
     href: "https://vorongo.itch.io/hooked",
     cover: "https://img.itch.zone/aW1nLzE5OTcyNDE2LnBuZw==/original/cwFjj2.png",
     store: "itch.io",
-    status: "dev"
+    status: "dev",
+    published: "2025-02-22"
   },
   {
     title: "Midnight Mage: Redux",
@@ -190,7 +167,8 @@ window.GAMES = [
     href: "https://vorongo.itch.io/midnight-mage-redux",
     cover: "https://img.itch.zone/aW1nLzIwMDUxODc0LnBuZw==/original/mnNdi8.png",
     store: "itch.io",
-    status: "paused"
+    status: "paused",
+    published: "2025-02-17"
   },
   {
     title: "Tap-a-Cat",
@@ -202,7 +180,9 @@ window.GAMES = [
     href: "https://vorongo.itch.io/tap-a-cat",
     cover: "https://img.itch.zone/aW1nLzE4NDQ2NTA0LnBuZw==/original/bBsvyy.png",
     store: "itch.io",
-    status: "dev"
+    status: "dev",
+    published: "2024-11-03",
+    updated: "2024-11-10"
   },
   {
     title: "Dino shooter",
@@ -214,21 +194,17 @@ window.GAMES = [
     href: "https://vorongo.itch.io/dino-shooter",
     cover: "https://img.itch.zone/aW1nLzE4MTIyOTMyLnBuZw==/original/mJ%2FU8n.png",
     store: "itch.io",
-    status: "paused"
-  },
-  {
-    title: "Caves of Gallet 3",
-    type: { ru: "Ассеты · Тайлсет", en: "Assets · Tileset" },
-    desc: {
-      ru: "Пиксельный тайлмап 8x8 для пещер. В разработке.",
-      en: "An 8x8 pixel tilemap for caves. In development."
-    },
-    href: "https://vorongo.itch.io/caves-of-gallet-3",
-    cover: "https://img.itch.zone/aW1nLzIwMTE2NzQ4LnBuZw==/original/Qr3doR.png",
-    store: "itch.io",
-    status: "dev"
+    status: "paused",
+    published: "2024-10-13",
+    updated: "2025-02-21"
   }
 ];
+
+window.fmtGameDate = function(s){
+  const lang = (typeof getLang === "function" ? getLang() : "ru");
+  const d = new Date(s + "T12:00:00");
+  return d.toLocaleDateString(lang === "ru" ? "ru-RU" : "en-US", { day: "numeric", month: "short", year: "numeric" });
+};
 
 window.renderGameCard = function(g){
   const lang = (typeof getLang === "function" ? getLang() : "ru");
@@ -242,6 +218,11 @@ window.renderGameCard = function(g){
   const place = g.place
     ? `<span class="jam-place${g.placeWin ? " win" : ""}">${g.place}</span>`
     : "";
+  const pubLabel = lang === "ru" ? "Опубликовано" : "Published";
+  const updLabel = lang === "ru" ? "Обновлено" : "Updated";
+  const dates = (g.published || g.updated)
+    ? `<div class="game-dates">${g.published ? `<span>${pubLabel}: ${fmtGameDate(g.published)}</span>` : ""}${g.updated ? ` · <span>${updLabel}: ${fmtGameDate(g.updated)}</span>` : ""}</div>`
+    : "";
   const statusClass = g.status === "finished" ? "released" : g.status;
   return `<a class="game" href="${g.href}" target="_blank" rel="noopener" data-status="${g.status}" data-title="${g.title.toLowerCase()}">
     <div class="game-img">${media}${place}</div>
@@ -249,6 +230,7 @@ window.renderGameCard = function(g){
       <h3>${g.title}</h3>
       <div class="type">${type}</div>
       <p>${desc}</p>
+      ${dates}
       <div class="game-foot"><span>${g.store}</span><span class="status ${statusClass}">${statusLabel}</span></div>
     </div>
   </a>`;
