@@ -336,14 +336,14 @@
     {t:'REACTOR SHIFT', s:'2026-01-01', seg:[], jam:true},
     {t:'DROP - The Cave Dwarf', s:'2026-04-04', seg:[]},
     {t:'WorkLog', s:'2026-08-03', seg:[{f:'2026-08-03',to:'today',st:'ongoing'}]},
-    {t:'Loot It Back', s:'2026-02-20', seg:[{f:'2026-02-20',to:'2026-02-22',st:'done'},{f:'2026-02-22',to:'today',st:'paused'}]},
+    {t:'Loot It Back', s:'2026-02-20', cover:'icons/loot-it-back.png', href:'https://vorongo.itch.io/loot-it-back', seg:[{f:'2026-02-20',to:'2026-02-22',st:'done'},{f:'2026-02-22',to:'today',st:'paused'}]},
     {t:'Pawn Wars', s:'2026-08-15', seg:[{f:'2026-08-15',to:'today',st:'ongoing'}]},
     {t:'Last Shot is in Green World', s:'2026-11-18', seg:[{f:'2026-11-18',to:'today',st:'ongoing'}]}
   ].sort((a,b)=>parse(a.s)-parse(b.s));
   const all=[...window.GAMES,...(window.APPS||[])];
   const lastRight=[];
   const placed=ROWS.map(r=>{
-    const g=all.find(x=>x.title===r.t)||{};
+    const g=r.cover?{cover:r.cover,href:r.href}:(all.find(x=>x.title===r.t)||{});
     const sx=xOf(parse(r.s));
     const endX=r.seg.length?(r.seg[r.seg.length-1].to==='today'?xOf(TODAY):xOf(parse(r.seg[r.seg.length-1].to))):sx;
     const left=sx-GAP-CARD, right=Math.max(sx,endX)+120;
