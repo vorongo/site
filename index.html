@@ -291,7 +291,7 @@
    const tooltip=(en?'First recorded: ':'Первая известная дата: ')+dateLabel+(d.end?' · '+(en?'Last update: ':'Последнее обновление: ')+d.end:'');
    html+='<a class="timeline-event" href="'+esc(g.href)+'" target="_blank" rel="noopener" title="'+esc(tooltip)+'" style="left:'+sx+'px;top:'+labelY+'px">'+(g.cover?'<img src="'+esc(g.cover)+'" alt="">':'')+'<span>'+esc(g.title)+'</span></a>';
    html+='<span class="timeline-stem" style="left:'+sx+'px;top:'+(above?labelY+45:pointY)+'px;height:'+(above?Math.max(0,pointY-labelY-45):19)+'px"></span>';
-   html+='<span class="timeline-main-dot" style="left:'+sx+'px;top:'+(pointY-8)+'px" title="'+esc(tooltip)+'"></span>';
+   html+='<span class="timeline-main-dot" style="left:'+sx+'px;top:'+(barY-4)+'px" title="'+esc(tooltip)+'"></span>';
    if(d.end){html+='<span class="timeline-duration" style="left:'+sx+'px;top:'+barY+'px;width:'+(ex-sx)+'px"></span><span class="timeline-end-dot" style="left:'+ex+'px;top:'+(barY-4)+'px" title="'+esc(d.end)+'"></span>';}
   });
   html+='</div><div class="timeline-undated">'+(en?'Dates to confirm: ':'Даты уточняются: ')+unknown.map(g=>'<a href="'+esc(g.href)+'" target="_blank" rel="noopener">'+esc(g.title)+'</a>').join('')+'</div>';
