@@ -268,6 +268,12 @@
       .gantt-key.ongoing{background:repeating-linear-gradient(45deg,#38bdf8 0 5px,rgba(56,189,248,0) 5px 11px),rgba(56,189,248,.16)}
       .gantt-key.paused,.gantt-key.prototype{background:repeating-linear-gradient(45deg,#94a3b8 0 5px,rgba(148,163,184,0) 5px 11px),rgba(148,163,184,.14)}
       .gantt-key.canceled{background:#64748b;opacity:.75}
+      .gantt-bar{position:absolute;height:14px;border-radius:999px;overflow:hidden;display:flex;align-items:stretch;box-sizing:border-box;--bar-color:#4ade80}
+      .gantt-bar-part{display:block;height:100%;flex:0 0 auto;box-sizing:border-box;margin:0;padding:0;border:0}
+      .gantt-bar-part.solid.done{background:#4ade80}
+      .gantt-bar-part.solid.canceled{background:#64748b}
+      .gantt-bar-part.striped.ongoing{background:repeating-linear-gradient(135deg,#38bdf8 0px,#38bdf8 3px,transparent 3px,transparent 9px),rgba(56,189,248,.16)}
+      .gantt-bar-part.striped.paused,.gantt-bar-part.striped.prototype{background:repeating-linear-gradient(135deg,#94a3b8 0px,#94a3b8 3px,transparent 3px,transparent 9px),rgba(148,163,184,.14)}
     </style>
   </section>
 </main>
@@ -366,11 +372,15 @@
     html+='<span class="gantt-conn" style="left:'+(sx-GAP)+'px;top:'+(mid-1)+'px;width:'+GAP+'px"></span>';
     let dateText, dotSt='done';
     if(r.seg.length){
+      const lastSeg=r.seg[r.seg.length-1];
+      const x0=xOf(parse(r.seg[0].f)), x1=lastSeg.to==='today'?todayX:xOf(parse(lastSeg.to));
+      html+='<span class="gantt-bar" style="left:'+x0+'px;width:'+Math.max(6,x1-x0)+'px;top:'+(mid-7)+'px">';
       r.seg.forEach(s=>{
         const fx=xOf(parse(s.f)), tx=s.to==='today'?todayX:xOf(parse(s.to));
-        const h=13;
-        html+='<span class="gantt-seg '+s.st+'" style="left:'+fx+'px;width:'+Math.max(6,tx-fx)+'px;top:'+(mid-h/2)+'px"></span>';
+        const kind=(s.st==='ongoing'||s.st==='paused'||s.st==='prototype')?'striped':'solid';
+        html+='<span class="gantt-bar-part '+kind+' '+s.st+'" style="width:'+Math.max(0,tx-fx)+'px"></span>';
       });
+      html+='</span>';
       dotSt=r.seg[0].st;
       const last=r.seg[r.seg.length-1];
       dateText=fmt(parse(r.s))+(last.to==='today'?' → сейчас':' – '+fmt(parse(last.to)));
