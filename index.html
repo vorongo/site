@@ -282,6 +282,22 @@
       .gantt-bar-part.solid.canceled{background:#64748b}
       .gantt-bar-part.striped.ongoing{background:repeating-linear-gradient(135deg,#38bdf8 0px,#38bdf8 3px,transparent 3px,transparent 9px),rgba(56,189,248,.16)}
       .gantt-bar-part.striped.paused,.gantt-bar-part.striped.prototype{background:repeating-linear-gradient(135deg,#94a3b8 0px,#94a3b8 3px,transparent 3px,transparent 9px),rgba(148,163,184,.14)}
+      /* ---- single status system: colours and stripe geometry shared by bars and legend ---- */
+      .gantt-bar-part.solid.done{background:#4ade80}
+      .gantt-bar-part.solid.canceled{background:#64748b;opacity:.75}
+      .gantt-bar-part.striped.ongoing{background:repeating-linear-gradient(135deg,#38bdf8 0 4px,transparent 4px 10px),rgba(56,189,248,.16)}
+      .gantt-bar-part.striped.paused{background:repeating-linear-gradient(135deg,#fb923c 0 3px,transparent 3px 12px),rgba(251,146,60,.14)}
+      .gantt-bar-part.striped.prototype{background:repeating-linear-gradient(135deg,#a78bfa 0 2px,transparent 2px 6px),rgba(167,139,250,.16)}
+      .gantt-key.done{background:#4ade80;height:13px;border-radius:999px}
+      .gantt-key.canceled{background:#64748b;opacity:.75;height:13px;border-radius:999px}
+      .gantt-key.ongoing{height:13px;border-radius:999px;background:repeating-linear-gradient(135deg,#38bdf8 0 4px,transparent 4px 10px),rgba(56,189,248,.16)}
+      .gantt-key.paused{height:13px;border-radius:999px;background:repeating-linear-gradient(135deg,#fb923c 0 3px,transparent 3px 12px),rgba(251,146,60,.14)}
+      .gantt-key.prototype{height:13px;border-radius:999px;background:repeating-linear-gradient(135deg,#a78bfa 0 2px,transparent 2px 6px),rgba(167,139,250,.16)}
+      .gantt-tick.done{background:#4ade80}
+      .gantt-tick.ongoing{background:#38bdf8}
+      .gantt-tick.paused{background:#fb923c}
+      .gantt-tick.prototype{background:#a78bfa}
+      .gantt-tick.canceled{background:#64748b}
     </style>
   </section>
 </main>
