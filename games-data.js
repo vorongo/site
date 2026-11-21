@@ -208,7 +208,8 @@ window.GAMES = [
     href: "https://vorongo.itch.io/realm-rift-the-awakening",
     cover: "https://img.itch.zone/aW1nLzE3NzA0NjY1LnBuZw==/original/87RFfC.png",
     store: "itch.io",
-    status: "paused"
+    status: "paused",
+    published: "2026-08-30"
   }
 ];
 
