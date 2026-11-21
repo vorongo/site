@@ -213,7 +213,7 @@
     <div class="gantt-legend">
       <span><i class="gantt-key done"></i>Разработка завершена</span>
       <span><i class="gantt-key ongoing"></i>В разработке</span>
-      <span><i class="gantt-key paused"></i>Приостановлена</span>
+      <span><i class="gantt-key paused"></i>Приостановлена</span>`n      <span><i class="gantt-key prototype"></i>Прототип</span>
       <span><i class="gantt-key canceled"></i>Отменена</span>
     </div>
     <style>
@@ -237,11 +237,11 @@
       .gantt-seg.done{height:8px;background:linear-gradient(90deg,#8fc793,var(--green));box-shadow:0 0 10px rgba(121,167,127,.35)}
       .gantt-seg.canceled{height:8px;background:var(--muted);opacity:.55}
       .gantt-seg.ongoing{height:4px;border-radius:4px;background:repeating-linear-gradient(90deg,var(--accent) 0 10px,transparent 10px 16px);box-shadow:0 0 8px rgba(74,143,201,.45)}
-      .gantt-seg.paused{height:4px;border-radius:4px;background:repeating-linear-gradient(90deg,var(--muted) 0 10px,transparent 10px 16px);opacity:.8}
+      .gantt-seg.paused,.gantt-seg.prototype{height:4px;border-radius:4px;background:repeating-linear-gradient(90deg,var(--muted) 0 10px,transparent 10px 16px);opacity:.8}
       .gantt-dot{position:absolute;width:14px;height:14px;border-radius:50%;border:3px solid var(--paper);box-shadow:0 0 0 1px var(--line);box-sizing:content-box}
       .gantt-dot.done{background:var(--green)}
       .gantt-dot.ongoing{background:var(--accent)}
-      .gantt-dot.paused,.gantt-dot.canceled{background:var(--muted)}
+      .gantt-dot.paused,.gantt-dot.canceled,.gantt-dot.prototype{background:var(--muted)}
       .gantt-date{position:absolute;font-size:10px;color:var(--muted);white-space:nowrap;font-weight:600}
       .gantt-scroll{position:relative;height:8px;margin-top:14px;border-radius:99px;background:var(--soft);border:1px solid var(--line);cursor:pointer}
       .gantt-thumb{position:absolute;top:0;bottom:0;left:0;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2));box-shadow:0 0 14px rgba(74,143,201,.5);cursor:grab}
@@ -250,7 +250,7 @@
       .gantt-key{display:inline-block;width:28px;height:8px;border-radius:6px}
       .gantt-key.done{background:linear-gradient(90deg,#8fc793,var(--green))}
       .gantt-key.ongoing{height:4px;border-radius:4px;background:repeating-linear-gradient(90deg,var(--accent) 0 10px,transparent 10px 16px)}
-      .gantt-key.paused{height:4px;border-radius:4px;background:repeating-linear-gradient(90deg,var(--muted) 0 10px,transparent 10px 16px)}
+      .gantt-key.paused,.gantt-key.prototype{height:4px;border-radius:4px;background:repeating-linear-gradient(90deg,var(--muted) 0 10px,transparent 10px 16px)}
       .gantt-key.canceled{background:var(--muted);opacity:.55}
     </style>
   </section>
@@ -311,7 +311,7 @@
   const ROWS=[
     {t:'Midnight Mage', s:'2024-01-01', seg:[], jam:true},
     {t:'Realm Rift: The Awakening', s:'2024-09-28', seg:[{f:'2024-09-28',to:'2024-10-06',st:'done'},{f:'2024-10-06',to:'today',st:'paused'}]},
-    {t:'Dino shooter', s:'2024-10-13', seg:[{f:'2024-10-13',to:'2025-02-21',st:'done'},{f:'2025-02-21',to:'today',st:'paused'}]},
+    {t:'Dino shooter', s:'2024-10-13', seg:[{f:'2024-10-13',to:'2025-02-21',st:'done'},{f:'2025-02-21',to:'today',st:'prototype'}]},
     {t:'Tap-a-Cat', s:'2024-11-03', seg:[{f:'2024-11-03',to:'2024-11-10',st:'canceled'}]},
     {t:'Midnight Mage: Redux', s:'2025-02-17', seg:[{f:'2025-02-17',to:'2025-02-26',st:'canceled'}]},
     {t:'Hooked', s:'2025-02-22', seg:[{f:'2025-02-22',to:'today',st:'paused'}]},
@@ -320,6 +320,7 @@
     {t:'REACTOR SHIFT', s:'2026-01-01', seg:[], jam:true},
     {t:'DROP - The Cave Dwarf', s:'2026-04-04', seg:[]},
     {t:'WorkLog', s:'2026-08-03', seg:[{f:'2026-08-03',to:'today',st:'ongoing'}]},
+    {t:'Loot It Back', s:'2026-02-20', seg:[{f:'2026-02-20',to:'2026-02-22',st:'done'},{f:'2026-02-22',to:'today',st:'paused'}]},
     {t:'Pawn Wars', s:'2026-08-15', seg:[{f:'2026-08-15',to:'today',st:'ongoing'}]},
     {t:'Last Shot is in Green World', s:'2026-11-18', seg:[{f:'2026-11-18',to:'today',st:'ongoing'}]}
   ].sort((a,b)=>parse(a.s)-parse(b.s));
