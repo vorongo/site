@@ -230,7 +230,7 @@
       .gantt-bar.ongoing{background:repeating-linear-gradient(-45deg,var(--accent) 0 5px,transparent 5px 9px);border:1px dashed var(--accent);box-sizing:border-box}
       .gantt-dot{position:absolute;top:14px;width:20px;height:20px;border-radius:50%;background:var(--accent);border:3px solid var(--paper);box-shadow:0 0 0 1px var(--line);transform:translateX(-50%)}
       .gantt-label{position:absolute;top:33px;font-size:10px;color:var(--muted);white-space:nowrap;transform:translateX(-0)}
-      .gantt-today{position:absolute;top:0;bottom:0;width:0;border-left:1px dashed var(--accent);opacity:.8}
+      .gantt-today{position:absolute;top:0;bottom:0;width:0;border-left:1px dashed var(--accent);opacity:.8}`n      .gantt-yline{position:absolute;top:0;bottom:0;width:0;border-left:1px dashed var(--muted);opacity:.7}
       .gantt-legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:14px;font-size:12px;color:var(--text-soft)}
       .gantt-legend span{display:inline-flex;align-items:center;gap:8px}
       .gantt-key{display:inline-block;width:26px;height:8px;border-radius:5px}
@@ -315,10 +315,6 @@
   for(let y=2024;y<=2026;y++){
     html+='<span class="gantt-yr" style="left:'+xOf(Date.UTC(y,0,1))+'px">'+y+'</span>';
   }
-  for(let i=0;i<Q;i++){
-    const ms=Date.UTC(2024,i*3,1);
-    html+='<span class="gantt-q" style="left:'+(xOf(ms)+6)+'px">Q'+(i%4+1)+'</span>';
-  }
   html+='</div></div>';
   ROWS.forEach(r=>{
     const sx=xOf(parse(r.s));
@@ -332,6 +328,7 @@
       html+='<span class="gantt-bar '+cls+'" style="left:'+sx+'px;width:'+Math.max(6,ex-sx)+'px"></span>';
       html+='<span class="gantt-label" style="left:'+sx+'px">'+(r.ongoing?fmt(parse(r.s))+' → сейчас':fmt(parse(r.s))+' – '+fmt(parse(r.e)))+'</span>';
     }
+    for(let y=2024;y<=2026;y++)html+='<span class="gantt-yline" style="left:'+xOf(Date.UTC(y,0,1))+'px"></span>';
     html+='<span class="gantt-today" style="left:'+todayX+'px"></span>';
     html+='</div></div>';
   });
