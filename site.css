@@ -168,7 +168,7 @@ html.dark .jam-place.win{background:#1a2a3a;border-color:#3a5a78;color:#85b8e8}
 .game .type{font-size:11px;color:var(--muted);margin-bottom:11px}
 .game p{font-size:11px;line-height:1.55;color:var(--text-soft);min-height:34px;margin:0 0 13px}
 .game-foot{display:flex;align-items:center;justify-content:space-between;font-size:10px;color:var(--muted)}
-.status{font-weight:700}.released{color:#72a278}.dev{color:#9b85bf}.paused{color:#8599bd}.for-jam{color:#85b8e8}
+.status{font-weight:700}.released{color:#72a278}.dev{color:#9b85bf}.paused{color:#8599bd}.prototype{color:#a78bfa}.for-jam{color:#85b8e8}
 
 .jams{padding:0 18px 18px}
 .jam{display:grid;grid-template-columns:132px 1fr 190px;gap:17px;align-items:center;padding:11px 7px;border-top:1px solid var(--line)}

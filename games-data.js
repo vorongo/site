@@ -189,13 +189,13 @@ window.GAMES = [
     title: "Dino shooter",
     type: { ru: "Шутер · Джем", en: "Shooter · Jam" },
     desc: {
-      ru: "Шутер с динозаврами. Игра для VORONGO Jam #3, с K3ny. Проект отменён.",
-      en: "A dinosaur shooter. Made for VORONGO Jam #3, with K3ny. Project cancelled."
+      ru: "Шутер с динозаврами. Прототип для VORONGO Jam #3, с K3ny.",
+      en: "A dinosaur shooter. Prototype made for VORONGO Jam #3, with K3ny."
     },
     href: "https://vorongo.itch.io/dino-shooter",
     cover: "https://img.itch.zone/aW1nLzE4MTIyOTMyLnBuZw==/original/mJ%2FU8n.png",
     store: "itch.io",
-    status: "paused",
+    status: "prototype",
     published: "2024-10-13",
     updated: "2025-02-21"
   },

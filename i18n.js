@@ -82,6 +82,7 @@ window.I18N = {
     "filter.dev": "В разработке",
     "filter.for-jam": "Для джема",
     "filter.paused": "Приостановлена",
+  "filter.prototype": "Прототип",
     "filter.participant": "Участник",
     "filter.winner": "Победитель",
     "filter.prizewinner": "Призёр",
@@ -89,7 +90,8 @@ window.I18N = {
     "status.finished": "ВЫПУЩЕНО ●",
     "status.dev": "В РАЗРАБОТКЕ ↗",
     "status.for-jam": "ДЛЯ ДЖЕМА ◇",
-    "status.paused": "ПРИОСТАНОВЛЕНА ‖"
+    "status.paused": "ПРИОСТАНОВЛЕНА ‖",
+  "status.prototype": "ПРОТОТИП ◈"
   },
   en: {
     "doc.title": "Vorongo - Game Developer",
@@ -174,6 +176,7 @@ window.I18N = {
     "filter.dev": "In development",
     "filter.for-jam": "Jam game",
     "filter.paused": "On hold",
+  "filter.prototype": "Prototype",
     "filter.participant": "Entrant",
     "filter.winner": "Winner",
     "filter.prizewinner": "Awardee",
@@ -181,7 +184,8 @@ window.I18N = {
     "status.finished": "RELEASED ●",
     "status.dev": "IN DEVELOPMENT ↗",
     "status.for-jam": "JAM GAME ◇",
-    "status.paused": "ON HOLD ‖"
+    "status.paused": "ON HOLD ‖",
+  "status.prototype": "PROTOTYPE ◈"
   }
 };
 
