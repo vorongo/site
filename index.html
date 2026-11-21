@@ -207,8 +207,38 @@
     </div>
   </section>
   <section id="timeline" class="section container" aria-labelledby="timeline-heading">
-    <div class="timeline-heading"><div><div class="eyebrow">VORONGO / ARCHIVE</div><h2 id="timeline-heading">История проектов <span class="timeline-en">/ Project timeline</span></h2><p>От первых джемов до текущих разработок. Даты указаны только там, где они известны.</p></div><span class="timeline-count" id="timeline-count"></span></div>
-    <div class="timeline-controls"><button id="timeline-prev" type="button" aria-label="Раньше">←</button><input id="timeline-slider" type="range" min="0" max="100" value="0" aria-label="Прокрутка временной шкалы"><button id="timeline-next" type="button" aria-label="Позже">→</button></div><div class="timeline-layout" tabindex="0"><div id="project-timeline" class="project-timeline"></div></div><div class="timeline-legend">● известные даты &nbsp; ● последнее обновление <span class="timeline-scrollhint"></span></div>
+    <div class="timeline-heading"><div><div class="eyebrow">VORONGO / ARCHIVE</div><h2 id="timeline-heading">История проектов</h2><p>Начало и окончание разработки. Пунктирная полоса — проект в разработке, она продлевается до сегодняшней даты.</p></div><span class="timeline-count" id="timeline-count"></span></div>
+    <div class="gantt-wrap"><div class="gantt" id="gantt"></div></div>
+    <div class="gantt-legend">
+      <span><i class="gantt-key done"></i>Разработка завершена</span>
+      <span><i class="gantt-key canceled"></i>Отменено</span>
+      <span><i class="gantt-key ongoing"></i>В разработке (до сегодня)</span>
+      <span><i class="gantt-key point"></i>Только дата начала</span>
+    </div>
+    <style>
+      .gantt-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:var(--paper);box-shadow:var(--shadow);margin-top:18px;-webkit-overflow-scrolling:touch}
+      .gantt{display:inline-block;min-width:100%;padding:8px 0 12px}
+      .gantt-row{display:flex;align-items:center;height:48px}
+      .gantt-row.head{height:44px}
+      .gantt-name{position:sticky;left:0;z-index:3;width:210px;flex:none;background:var(--paper);padding:0 14px;font-size:12px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+      .gantt-track{position:relative;height:100%;flex:none;background-image:repeating-linear-gradient(to right,var(--line) 0 1px,transparent 1px 110px);background-position:0 0}
+      .gantt-yr{position:absolute;top:2px;font-size:12px;font-weight:800;color:var(--text-soft)}
+      .gantt-q{position:absolute;top:22px;font-size:10px;font-weight:700;color:var(--muted)}
+      .gantt-bar{position:absolute;top:19px;height:10px;border-radius:6px}
+      .gantt-bar.done{background:var(--green)}
+      .gantt-bar.canceled{background:var(--muted);opacity:.45}
+      .gantt-bar.ongoing{background:repeating-linear-gradient(-45deg,var(--accent) 0 5px,transparent 5px 9px);border:1px dashed var(--accent);box-sizing:border-box}
+      .gantt-dot{position:absolute;top:14px;width:20px;height:20px;border-radius:50%;background:var(--accent);border:3px solid var(--paper);box-shadow:0 0 0 1px var(--line);transform:translateX(-50%)}
+      .gantt-label{position:absolute;top:33px;font-size:10px;color:var(--muted);white-space:nowrap;transform:translateX(-0)}
+      .gantt-today{position:absolute;top:0;bottom:0;width:0;border-left:1px dashed var(--accent);opacity:.8}
+      .gantt-legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:14px;font-size:12px;color:var(--text-soft)}
+      .gantt-legend span{display:inline-flex;align-items:center;gap:8px}
+      .gantt-key{display:inline-block;width:26px;height:8px;border-radius:5px}
+      .gantt-key.done{background:var(--green)}
+      .gantt-key.canceled{background:var(--muted);opacity:.45}
+      .gantt-key.ongoing{background:repeating-linear-gradient(-45deg,var(--accent) 0 5px,transparent 5px 9px);border:1px dashed var(--accent);box-sizing:border-box}
+      .gantt-key.point{width:12px;height:12px;border-radius:50%;background:var(--accent)}
+    </style>
   </section>
 </main>
 
@@ -253,91 +283,63 @@
 <script src="youtube-api.js"></script>
 <script>
 (function(){
- const root=document.getElementById('project-timeline'),viewport=document.querySelector('.timeline-layout');
- if(!root||!viewport||!window.GAMES)return;
- const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- const dates={
- 'DROP - The Cave Dwarf':{start:'2026-04-04'},
- 'Last Shot is in Green World':{start:'2026-11-18'},
- 'WorkLog':{start:'2026-08-03',end:'2026-08-25'},
- 'Clone Quest':{start:'2025-03-01',end:'2026-05-09'},
- 'Pawn Wars':{start:'2026-08-15'},
- 'Midnight Mage':{start:'2024-01-01',yearOnly:true},
- 'The Last Portrait':{start:'2026-01-01',yearOnly:true},
- 'REACTOR SHIFT':{start:'2026-01-01',yearOnly:true},
- 'Hooked':{start:'2025-02-22'},
- 'Midnight Mage: Redux':{start:'2025-02-17',end:'2025-02-26'},
- 'Tap-a-Cat':{start:'2024-11-03',end:'2024-11-10'},
- 'Dino shooter':{start:'2024-10-13',end:'2025-02-21'},
- 'Realm Rift: The Awakening':{start:'2024-09-28',end:'2024-10-06'}
- };
- const min=Date.UTC(2024,0,1),max=Date.UTC(2027,0,1),W=1740;
- const x=d=>Math.max(0,Math.min(W,(Date.parse(d+'T00:00:00Z')-min)/(max-min)*W));
- const known=[...GAMES,...(window.APPS||[])].filter(g=>dates[g.title]).sort((a,b)=>x(dates[a.title].start)-x(dates[b.title].start));
- const unknown=[...GAMES,...(window.APPS||[])].filter(g=>!dates[g.title]);
- function render(){
-  const en=typeof getLang==='function'&&getLang()==='en';
-  let html='<div class="timeline-canvas"><div class="timeline-main-axis"></div>';
-  for(let y=2024;y<=2027;y++)html+='<span class="timeline-main-year" style="left:'+x(y+'-01-01')+'px">'+y+'</span>';
-  // One shared timeline: each project is a marker above or below the same horizontal axis.
-  const laneLast=[0,0,0,0,0].map(()=>-1e9);
- known.forEach((g,i)=>{
-   const d=dates[g.title],sx=x(d.start),ex=d.end?x(d.end):sx;
-   // Separate dedicated horizontal lanes prevent unrelated project segments crossing.
-   const lanes=[138,210,350,425,500];
-   let li=lanes.findIndex((_,k)=>sx-laneLast[k]>150);if(li<0)li=laneLast.indexOf(Math.min(...laneLast));laneLast[li]=Math.max(sx,ex);const pointY=lanes[li],above=pointY<280;
-   const labelY=above?pointY-58:pointY+19;const barY=labelY-30;
-   const dateLabel=d.yearOnly?d.start.slice(0,4):d.start;
-   const tooltip=(en?'First recorded: ':'Первая известная дата: ')+dateLabel+(d.end?' · '+(en?'Last update: ':'Последнее обновление: ')+d.end:'');
-   html+='<a class="timeline-event" href="'+esc(g.href)+'" target="_blank" rel="noopener" title="'+esc(tooltip)+'" style="left:'+sx+'px;top:'+labelY+'px">'+(g.cover?'<img src="'+esc(g.cover)+'" alt="">':'')+'<span>'+esc(g.title)+'</span></a>';
-   html+='<span class="timeline-stem" style="left:'+sx+'px;top:'+(barY+13)+'px;height:'+(labelY-barY-13)+'px"></span>';
-   html+='<span class="timeline-main-dot" style="left:'+sx+'px;top:'+(barY-4)+'px" title="'+esc(tooltip)+'"></span>';
-   if(d.end){html+='<span class="timeline-duration" style="left:'+sx+'px;top:'+barY+'px;width:'+(ex-sx)+'px"></span><span class="timeline-end-dot" style="left:'+ex+'px;top:'+(barY-4)+'px" title="'+esc(d.end)+'"></span>';}
+  const host=document.getElementById('gantt');
+  if(!host||!window.GAMES)return;
+  const QW=110, Q=12, W=QW*Q;                   // 12 quarters, 2024 to 2026
+  const MIN=Date.UTC(2024,0,1), MAX=Date.UTC(2027,0,1);
+  const parse=s=>Date.parse(s+'T00:00:00Z');
+  const now=new Date(), TODAY=Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate());
+  const xOf=ms=>Math.max(0,Math.min(W,(ms-MIN)/(MAX-MIN)*W));
+  const ru=(navigator.language||'ru').startsWith('ru');
+  const fmt=ms=>new Date(ms).toLocaleDateString(ru?'ru-RU':'en-US',{month:'short',year:'numeric',timeZone:'UTC'});
+  // Start dates and finish dates from our data. ongoing = still in development (line extends to today).
+  const ROWS=[
+    {t:'Midnight Mage', s:'2024-01-01', point:true},
+    {t:'Realm Rift: The Awakening', s:'2024-09-28', ongoing:true},
+    {t:'Dino shooter', s:'2024-10-13', e:'2025-02-21', canceled:true},
+    {t:'Tap-a-Cat', s:'2024-11-03', e:'2024-11-10'},
+    {t:'Midnight Mage: Redux', s:'2025-02-17', e:'2025-02-26', canceled:true},
+    {t:'Hooked', s:'2025-02-22', ongoing:true},
+    {t:'Clone Quest', s:'2025-03-01', ongoing:true},
+    {t:'The Last Portrait', s:'2026-01-01', point:true},
+    {t:'REACTOR SHIFT', s:'2026-01-01', point:true},
+    {t:'DROP - The Cave Dwarf', s:'2026-04-04', point:true},
+    {t:'WorkLog', s:'2026-08-03', ongoing:true},
+    {t:'Pawn Wars', s:'2026-08-15', ongoing:true},
+    {t:'Last Shot is in Green World', s:'2026-11-18', ongoing:true}
+  ].sort((a,b)=>parse(a.s)-parse(b.s));
+  const todayX=xOf(TODAY);
+  let html='';
+  // header: years and quarters
+  html+='<div class="gantt-row head"><div class="gantt-name"></div><div class="gantt-track">';
+  for(let y=2024;y<=2026;y++){
+    html+='<span class="gantt-yr" style="left:'+xOf(Date.UTC(y,0,1))+'px">'+y+'</span>';
+  }
+  for(let i=0;i<Q;i++){
+    const ms=Date.UTC(2024,i*3,1);
+    html+='<span class="gantt-q" style="left:'+(xOf(ms)+6)+'px">Q'+(i%4+1)+'</span>';
+  }
+  html+='</div></div>';
+  ROWS.forEach(r=>{
+    const sx=xOf(parse(r.s));
+    const ex=r.ongoing?todayX:(r.e?xOf(parse(r.e)):sx);
+    const cls=r.canceled?'canceled':(r.ongoing?'ongoing':'done');
+    html+='<div class="gantt-row"><div class="gantt-name" title="'+r.t+'">'+r.t+'</div><div class="gantt-track">';
+    if(r.point){
+      html+='<span class="gantt-dot" style="left:'+sx+'px"></span>';
+      html+='<span class="gantt-label" style="left:'+(sx+12)+'px;top:14px">'+fmt(parse(r.s))+'</span>';
+    }else{
+      html+='<span class="gantt-bar '+cls+'" style="left:'+sx+'px;width:'+Math.max(6,ex-sx)+'px"></span>';
+      html+='<span class="gantt-label" style="left:'+sx+'px">'+(r.ongoing?fmt(parse(r.s))+' → сейчас':fmt(parse(r.s))+' – '+fmt(parse(r.e)))+'</span>';
+    }
+    html+='<span class="gantt-today" style="left:'+todayX+'px"></span>';
+    html+='</div></div>';
   });
-  html+='</div><div class="timeline-undated">'+(en?'Dates to confirm: ':'Даты уточняются: ')+unknown.map(g=>'<a href="'+esc(g.href)+'" target="_blank" rel="noopener">'+esc(g.title)+'</a>').join('')+'</div>';
-  root.innerHTML=html;
-  document.getElementById('timeline-count').textContent=(GAMES.length+(window.APPS||[]).length)+' '+(en?'projects':'проектов');
-  document.getElementById('timeline-heading').textContent=en?'Project history':'История проектов';
-  document.querySelector('#timeline .timeline-heading p').textContent=en?'All projects on one shared timeline. Markers show documented dates, not necessarily development start and finish.':'Все проекты на одной шкале. Точки показывают известные даты, не обязательно начало и конец разработки.';
- }
- render();document.addEventListener('langchange',render);
- const slider=document.getElementById('timeline-slider');
- viewport.style.scrollBehavior='auto';
- function sync(){const maxScroll=viewport.scrollWidth-viewport.clientWidth;slider.disabled=maxScroll<=0;slider.value=maxScroll>0?Math.round(viewport.scrollLeft/maxScroll*100):0}
- slider.addEventListener('input',()=>{const maxScroll=Math.max(0,viewport.scrollWidth-viewport.clientWidth);viewport.scrollTo({left:maxScroll*Number(slider.value)/100,behavior:'instant'})});
- viewport.addEventListener('scroll',sync,{passive:true});
- // Drag the timeline itself, without swallowing clicks on project links.
- let down=false,drag=false,startX=0,lastX=0,lastT=0,v=0,coastFrame=0,suppress=false;
- const stopCoast=()=>{if(coastFrame)cancelAnimationFrame(coastFrame);coastFrame=0};
- viewport.addEventListener('pointerdown',e=>{
-  if(e.pointerType!=='mouse'||e.button!==0)return;
-  stopCoast();down=true;drag=false;suppress=false;startX=lastX=e.clientX;lastT=performance.now();v=0;
- });
- viewport.addEventListener('pointermove',e=>{
-  if(!down)return;
-  if(!drag){if(Math.abs(e.clientX-startX)<7)return;drag=true;viewport.classList.add('is-dragging');viewport.setPointerCapture(e.pointerId)}
-  const now=performance.now(),dx=e.clientX-lastX,dt=Math.max(1,now-lastT);
-  viewport.scrollLeft-=dx;v=v*.55+(-dx/dt)*.45;lastX=e.clientX;lastT=now;
- });
- function finish(e){
-  if(!down)return;down=false;viewport.classList.remove('is-dragging');
-  if(!drag)return;drag=false;suppress=true;
-  if(e.type==='pointercancel')return;
-  let speed=performance.now()-lastT>110?0:Math.max(-2.5,Math.min(2.5,v));
-  if(Math.abs(speed)<.06)return;
-  let prev=performance.now();
-  function coast(now){const dt=Math.min(35,now-prev);prev=now;viewport.scrollLeft+=speed*dt;speed*=Math.pow(.94,dt/16.67);if(Math.abs(speed)>.025)coastFrame=requestAnimationFrame(coast);else stopCoast()}
-  coastFrame=requestAnimationFrame(coast);
- }
- viewport.addEventListener('pointerup',finish);
- viewport.addEventListener('pointercancel',finish);
- viewport.addEventListener('lostpointercapture',e=>{if(down)finish(e)});
- viewport.addEventListener('click',e=>{if(suppress){e.preventDefault();e.stopPropagation();suppress=false}},true);
- viewport.addEventListener('dragstart',e=>e.preventDefault());
-
- document.getElementById('timeline-prev').addEventListener('click',()=>viewport.scrollBy({left:-300,behavior:'smooth'}));
- document.getElementById('timeline-next').addEventListener('click',()=>viewport.scrollBy({left:300,behavior:'smooth'}));
- window.addEventListener('resize',sync);sync();
+  host.innerHTML=html;
+  // each track is a grid of quarters; apply the same width everywhere
+  host.querySelectorAll('.gantt-track').forEach(t=>t.style.width=W+'px');
+  const count=document.getElementById('timeline-count');
+  if(count)count.textContent=ROWS.length+' проектов';
 })();
 </script>
 
