@@ -168,7 +168,8 @@ window.GAMES = [
     cover: "https://img.itch.zone/aW1nLzIwMDUxODc0LnBuZw==/original/mnNdi8.png",
     store: "itch.io",
     status: "paused",
-    published: "2025-02-17"
+    published: "2025-02-17",
+    updated: "2025-02-26"
   },
   {
     title: "Tap-a-Cat",
@@ -209,7 +210,8 @@ window.GAMES = [
     cover: "https://img.itch.zone/aW1nLzE3NzA0NjY1LnBuZw==/original/87RFfC.png",
     store: "itch.io",
     status: "paused",
-    published: "2026-08-30"
+    published: "2024-09-28",
+    updated: "2024-10-06"
   }
 ];
 
