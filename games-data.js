@@ -9,7 +9,7 @@ window.APPS = [
     href: "https://play.google.com/store/apps/details?id=com.vorongo.worklog",
     cover: "https://play-lh.googleusercontent.com/tzNKIhXf9c1Met77R9KzVNI1OUPJc0ClK3mCQG-COIuV0QgzXua7jrIzkLG7_IO1Cq1tmdzySrSWjaFP7Bcx4VA=s0-br30",
     store: "Google Play",
-    status: "finished"
+    status: "released"
   }
 ];
 
@@ -212,6 +212,18 @@ window.GAMES = [
     status: "canceled",
     published: "2024-09-28",
     updated: "2024-10-06"
+  },
+  {
+    title: "Loot It Back",
+    type: { ru: "Экшен-кликер", en: "Action clicker" },
+    desc: {
+      ru: "Гоблины украли твои сокровища, и их нужно вернуть. Ломай падающие предметы, зарабатывай золото и прокачивайся. Открывай способности и выбирай стратегию.",
+      en: "Goblins stole your treasure, and it is time to take it back. Break falling items, earn gold and upgrade. Unlock abilities and choose your strategy."
+    },
+    href: "https://vorongo.itch.io/loot-it-back",
+    cover: "icons/loot-it-back.png",
+    store: "Google Play · закрытое тестирование",
+    status: "paused"
   }
 ];
 
