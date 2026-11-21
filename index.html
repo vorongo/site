@@ -280,11 +280,11 @@
   let html='<div class="timeline-canvas"><div class="timeline-main-axis"></div>';
   for(let y=2024;y<=2027;y++)html+='<span class="timeline-main-year" style="left:'+x(y+'-01-01')+'px">'+y+'</span>';
   // One shared timeline: each project is a marker above or below the same horizontal axis.
-  const laneLast=[0,0,0,0,0,0,0].map(()=>-1e9);
+  const laneLast=[0,0,0,0,0].map(()=>-1e9);
  known.forEach((g,i)=>{
    const d=dates[g.title],sx=x(d.start),ex=d.end?x(d.end):sx;
    // Separate dedicated horizontal lanes prevent unrelated project segments crossing.
-   const lanes=[68,118,248,302,354,410,462];
+   const lanes=[78,150,290,365,440];
    let li=lanes.findIndex((_,k)=>sx-laneLast[k]>150);if(li<0)li=laneLast.indexOf(Math.min(...laneLast));laneLast[li]=Math.max(sx,ex);const pointY=lanes[li],above=pointY<180;
    const labelY=above?pointY-58:pointY+19;
    const dateLabel=d.yearOnly?d.start.slice(0,4):d.start;
