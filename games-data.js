@@ -197,6 +197,18 @@ window.GAMES = [
     status: "paused",
     published: "2024-10-13",
     updated: "2025-02-21"
+  },
+  {
+    title: "Realm Rift: The Awakening",
+    type: { ru: "Командный проект", en: "Team project" },
+    desc: {
+      ru: "Совместная разработка. Сейчас проект приостановлен.",
+      en: "A collaborative project. Currently on hold."
+    },
+    href: "https://vorongo.itch.io/realm-rift-the-awakening",
+    cover: "https://img.itch.zone/aW1nLzE3NzA0NjY1LnBuZw==/original/87RFfC.png",
+    store: "itch.io",
+    status: "paused"
   }
 ];
 
