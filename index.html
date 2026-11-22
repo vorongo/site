@@ -211,6 +211,7 @@
     <div class="gantt-wrap" id="gantt-wrap"><div class="gantt" id="gantt"></div></div>
     <div class="gantt-scroll" id="gantt-scroll" aria-hidden="true"><div class="gantt-thumb" id="gantt-thumb"></div></div>
     <div class="gantt-legend">
+      <label class="gantt-toggle"><input type="checkbox" id="tl-videos"> Видео с YouTube (тест)</label>
       <span><i class="gantt-key done"></i>Разработка завершена</span>
       <span><i class="gantt-key ongoing"></i>В разработке</span>
       <span><i class="gantt-key paused"></i>Приостановлена</span>
@@ -298,6 +299,12 @@
       .gantt-tick.paused{background:#94a3b8}
       .gantt-tick.prototype{background:#a78bfa}
       .gantt-tick.canceled{background:#64748b}
+      .gantt-toggle{display:inline-flex;align-items:center;gap:8px;cursor:pointer;color:var(--ink);font-weight:650}
+      .gantt-toggle input{accent-color:var(--accent);width:15px;height:15px;margin:0}
+      .gantt-yt{position:absolute;display:block;width:3px;height:18px;border-radius:2px;background:#ff4e45;transform:translateX(-1px);transition:width .12s}
+      .gantt-yt:hover{width:7px}
+      .gantt-yt-label{width:auto;height:auto;background:none;transform:none;font-size:10px;font-weight:700;color:var(--muted);white-space:nowrap}
+      .gantt-yt-label:hover{width:auto}
     </style>
   </section>
 </main>
@@ -464,6 +471,47 @@
   sync();
   const count=document.getElementById('timeline-count');
   if(count)count.textContent=ROWS.length+' проектов';
+})();
+</script>
+<script>
+(function(){
+  const cb=document.getElementById('tl-videos');
+  if(!cb)return;
+  const QW=110, NQ=14, W=QW*NQ, MIN=Date.UTC(2023,6,1), MAX=Date.UTC(2027,0,1);
+  const xOf=ms=>Math.max(0,Math.min(W,(ms-MIN)/(MAX-MIN)*W));
+  let videos=null, baseH=null;
+  async function load(){
+    if(videos)return videos;
+    const r=await fetch('yt-videos.json',{cache:'no-cache'});
+    if(!r.ok)throw new Error('yt-videos.json');
+    videos=await r.json();
+    return videos;
+  }
+  cb.addEventListener('change',async()=>{
+    const body=document.querySelector('#gantt .gantt-body');
+    if(!body)return;
+    body.querySelectorAll('.gantt-yt').forEach(n=>n.remove());
+    if(baseH===null)baseH=parseFloat(body.style.height)||0;
+    if(!cb.checked){body.style.height=baseH+'px';return;}
+    let list;
+    try{list=await load();}catch(e){cb.checked=false;body.style.height=baseH+'px';return;}
+    const laneTop=baseH+10;
+    body.style.height=(baseH+50)+'px';
+    const label=document.createElement('span');
+    label.className='gantt-yt gantt-yt-label';
+    label.style.left='10px'; label.style.top=(laneTop+2)+'px';
+    label.textContent='Видео · '+list.length;
+    body.appendChild(label);
+    list.forEach(v=>{
+      const ms=Date.parse(v.date+'T00:00:00Z');
+      const a=document.createElement('a');
+      a.className='gantt-yt';
+      a.href=v.url; a.target='_blank'; a.rel='noopener';
+      a.title=v.date+' · '+v.title;
+      a.style.left=xOf(ms)+'px'; a.style.top=laneTop+'px';
+      body.appendChild(a);
+    });
+  });
 })();
 </script>
 
