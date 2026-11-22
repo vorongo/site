@@ -90,7 +90,7 @@ window.GAMES = [
     href: "https://vorongo.itch.io/pawn-wars",
     cover: "https://img.itch.zone/aW1nLzI5Mzk3NzY5LnBuZw==/315x250%23c/D8igPk.png",
     store: "itch.io",
-    status: "dev"
+    status: "paused"
   },
   {
     title: "The Last Portrait",
